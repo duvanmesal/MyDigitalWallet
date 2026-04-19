@@ -1,0 +1,95 @@
+ion-content {
+  --background: #F8F9FD;
+}
+
+ion-header ion-toolbar {
+  --background: transparent;
+  --color: #fff;
+}
+
+form {
+  padding-top: 12px;
+}
+
+.logo-section {
+  text-align: center;
+  padding: 32px 0 24px;
+
+  .logo-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #6C5CE7, #a29bfe);
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ion-icon {
+      font-size: 36px;
+      color: #fff;
+    }
+  }
+
+  h1 {
+    font-size: 26px;
+    font-weight: 800;
+    color: #1a1a2e;
+    margin: 0;
+  }
+
+  p {
+    color: #A4B0BE;
+    margin: 6px 0 0;
+    font-size: 14px;
+  }
+}
+
+ion-list {
+  background: transparent;
+
+  ion-item {
+    --background: #fff;
+    --border-radius: 14px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    margin-bottom: 6px;
+    box-shadow: 0 2px 8px rgba(108, 92, 231, 0.06);
+    --border-color: transparent;
+  }
+}
+
+ion-note[color="danger"] {
+  display: block;
+  padding: 2px 16px 8px;
+  font-size: 0.75rem;
+}
+
+ion-button[type="submit"] {
+  --background: linear-gradient(135deg, #6C5CE7, #a29bfe);
+  --border-radius: 14px;
+  --box-shadow: 0 8px 24px rgba(108, 92, 231, 0.35);
+  height: 52px;
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 20px;
+}
+
+ion-button[color="danger"] {
+  --border-radius: 14px;
+  height: 48px;
+  font-weight: 600;
+  --border-width: 2px;
+}
+
+ion-button[fill="clear"] {
+  font-weight: 600;
+  font-size: 14px;
+  --color: #6C5CE7;
+}
+
+.biometry-btn {
+  --border-radius: 14px;
+  height: 48px;
+  --border-width: 2px;
+}

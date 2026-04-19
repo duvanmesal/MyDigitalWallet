@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Inicia Sesión</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="logo-section">
+    <div class="logo-circle">
+      <ion-icon name="wallet-outline"></ion-icon>
+    </div>
+    <h1>MyDigitalWallet</h1>
+    <p>Tu billetera digital segura</p>
+  </div>
+
+  <form [formGroup]="formData" (ngSubmit)="handleSubmit()">
+    <ion-list lines="none">
+      <ion-item>
+        <ion-label position="stacked">Correo Electrónico</ion-label>
+        <ion-input type="email" formControlName="emailAddress" autocomplete="email"></ion-input>
+      </ion-item>
+      <ion-note color="danger" *ngIf="formData.controls.emailAddress.touched && formData.controls.emailAddress.invalid">
+        Correo no válido
+      </ion-note>
+
+      <ion-item>
+        <ion-label position="stacked">Contraseña de Acceso</ion-label>
+        <ion-input type="password" formControlName="accessPassword" autocomplete="current-password"></ion-input>
+      </ion-item>
+      <ion-note color="danger" *ngIf="formData.controls.accessPassword.touched && formData.controls.accessPassword.invalid">
+        Mínimo 6 caracteres
+      </ion-note>
+    </ion-list>
+
+    <ion-button expand="block" type="submit" [disabled]="isProcessing">
+      <ion-spinner *ngIf="isProcessing" name="crescent"></ion-spinner>
+      <span *ngIf="!isProcessing">Acceder</span>
+    </ion-button>
+
+    <ion-button
+      expand="block"
+      fill="outline"
+      type="button"
+      color="danger"
+      (click)="handleGoogleSignIn()"
+      [disabled]="isProcessing"
+      class="ion-margin-top">
+      <ion-icon name="logo-google" slot="start"></ion-icon>
+      Continuar con Google
+    </ion-button>
+
+    <ion-button
+      *ngIf="biometryAvailable"
+      expand="block"
+      fill="outline"
+      type="button"
+      (click)="handleBiometricSignIn()"
+      [disabled]="isProcessing"
+      class="biometry-btn ion-margin-top">
+      <ion-icon name="finger-print" slot="start"></ion-icon>
+      Ingresar con Biometría
+    </ion-button>
+
+    <ion-button expand="block" fill="clear" type="button" (click)="navigateToEnrollment()">
+      ¿No tienes cuenta? <strong>&nbsp;Regístrate</strong>
+    </ion-button>
+  </form>
+</ion-content>
