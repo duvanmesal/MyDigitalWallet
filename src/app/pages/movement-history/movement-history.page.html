@@ -1,0 +1,111 @@
+<ion-header class="ion-no-border hist-header">
+  <ion-toolbar>
+    <div class="header-inner">
+      <button class="back-btn" type="button" (click)="goBack()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </button>
+      <span class="header-title">Movimientos</span>
+      <button class="reset-btn" type="button" (click)="resetFilters()">
+        <ion-icon name="refresh-outline"></ion-icon>
+      </button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- ══════ STATS HERO ══════ -->
+  <div class="stats-hero">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+
+    <p class="stats-label">Total del periodo</p>
+    <h1 class="stats-amount">${{ (totalExpense$ | async) ?? 0 | number:'1.0-0' }}</h1>
+
+    <div class="stats-badge" *ngIf="filteredRecords$ | async as records">
+      <ion-icon name="receipt-outline"></ion-icon>
+      <span>{{ records.length }} transacción{{ records.length !== 1 ? 'es' : '' }}</span>
+    </div>
+  </div>
+
+  <!-- ══════ CONTENT SHEET ══════ -->
+  <div class="sheet">
+
+    <!-- Filter chips -->
+    <div class="filters-zone">
+      <div class="chips-scroll">
+        <button
+          class="filter-chip"
+          [class.active]="selectedMethodId === ''"
+          (click)="applyMethodFilter('')">
+          <ion-icon name="grid-outline"></ion-icon>
+          Todas
+        </button>
+        <button
+          class="filter-chip"
+          *ngFor="let m of paymentMethods$ | async"
+          [class.active]="selectedMethodId === m.id"
+          [class.visa]="m.paymentNetwork === 'visa'"
+          [class.mc]="m.paymentNetwork === 'mastercard'"
+          (click)="applyMethodFilter(m.id ?? '')">
+          <ion-icon name="card-outline"></ion-icon>
+          {{ m.paymentNetwork | uppercase }} ···· {{ m.cardTail }}
+        </button>
+      </div>
+
+      <!-- Date filter -->
+      <div class="date-row">
+        <div class="date-icon">
+          <ion-icon name="calendar-outline"></ion-icon>
+        </div>
+        <app-date-selector
+          label="Filtrar por fecha"
+          (dateChanged)="handleDateChange($event)">
+        </app-date-selector>
+      </div>
+    </div>
+
+    <!-- Records -->
+    <div class="records-zone">
+      <ng-container *ngIf="filteredRecords$ | async as records">
+        <div class="records-empty" *ngIf="records.length === 0">
+          <div class="empty-icon"><ion-icon name="receipt-outline"></ion-icon></div>
+          <p class="empty-title">Sin movimientos</p>
+          <p class="empty-sub">No hay transacciones para los filtros seleccionados</p>
+        </div>
+        <app-record-list
+          *ngIf="records.length > 0"
+          [recordsList]="records"
+          (recordLongPressed)="openReactionPicker($event)">
+        </app-record-list>
+      </ng-container>
+    </div>
+
+    <div class="bottom-pad"></div>
+  </div>
+
+</ion-content>
+
+<!-- ══════ REACTION MODAL ══════ -->
+<ion-modal
+  [isOpen]="!!selectedRecordForReaction"
+  (didDismiss)="closeReactionPicker()"
+  [initialBreakpoint]="0.42"
+  [breakpoints]="[0, 0.42]">
+  <ng-template>
+    <div class="reaction-sheet" *ngIf="selectedRecordForReaction">
+      <div class="sheet-handle"></div>
+      <p class="reaction-vendor">{{ selectedRecordForReaction.vendor }}</p>
+      <p class="reaction-subtitle">¿Cómo fue este gasto?</p>
+      <div class="reaction-grid">
+        <button
+          class="reaction-btn"
+          *ngFor="let r of quickReactions"
+          (click)="applyReaction(r)">
+          {{ r }}
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>

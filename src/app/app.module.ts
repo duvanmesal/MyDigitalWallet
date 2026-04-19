@@ -20,7 +20,7 @@ import { CoreModule } from './core/core.module';
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideHttpClient(),
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
   ],

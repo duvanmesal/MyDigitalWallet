@@ -1,0 +1,343 @@
+ion-content {
+  --background: #F8F9FD;
+}
+
+// ═══════════════════════════════════════
+// HEADER
+// ═══════════════════════════════════════
+
+.hist-header ion-toolbar {
+  --background: #160328;
+  --color: #fff;
+  --border-color: transparent;
+  --padding-start: 0;
+  --padding-end: 0;
+  --min-height: 60px;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 60px;
+}
+
+.back-btn,
+.reset-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+  flex-shrink: 0;
+
+  ion-icon { font-size: 18px; }
+
+  &:active {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(0.92);
+  }
+}
+
+.header-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.2px;
+}
+
+// ═══════════════════════════════════════
+// STATS HERO
+// ═══════════════════════════════════════
+
+.stats-hero {
+  background: linear-gradient(150deg, #160328 0%, #3d1273 35%, #6C5CE7 75%, #a29bfe 100%);
+  padding: 28px 24px 70px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+
+  &.b1 {
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.04);
+    top: -110px;
+    right: -70px;
+  }
+
+  &.b2 {
+    width: 180px;
+    height: 180px;
+    background: rgba(253, 121, 168, 0.09);
+    bottom: -50px;
+    left: -40px;
+  }
+
+  &.b3 {
+    width: 90px;
+    height: 90px;
+    background: rgba(0, 206, 201, 0.07);
+    top: 20px;
+    left: 25%;
+  }
+}
+
+.stats-label {
+  position: relative;
+  z-index: 2;
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.stats-amount {
+  position: relative;
+  z-index: 2;
+  margin: 0 0 14px;
+  font-size: 44px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+.stats-badge {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+
+  ion-icon { font-size: 13px; }
+}
+
+// ═══════════════════════════════════════
+// CONTENT SHEET
+// ═══════════════════════════════════════
+
+.sheet {
+  background: #F8F9FD;
+  border-radius: 28px 28px 0 0;
+  margin-top: -32px;
+  position: relative;
+  z-index: 5;
+  padding-top: 8px;
+  min-height: 100vh;
+}
+
+// ═══════════════════════════════════════
+// FILTERS
+// ═══════════════════════════════════════
+
+.filters-zone {
+  padding: 20px 0 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+// ─── Method chips ───
+.chips-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 0 20px 12px;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+.filter-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1.5px solid #e8eaf0;
+  background: #fff;
+  color: #636e88;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  ion-icon { font-size: 14px; }
+
+  &:active { transform: scale(0.95); }
+
+  &.active {
+    background: rgba(108, 92, 231, 0.08);
+    border-color: #6C5CE7;
+    color: #6C5CE7;
+  }
+
+  &.active.visa {
+    background: rgba(67, 97, 238, 0.08);
+    border-color: #4361ee;
+    color: #4361ee;
+  }
+
+  &.active.mc {
+    background: rgba(204, 34, 41, 0.08);
+    border-color: #cc2229;
+    color: #cc2229;
+  }
+}
+
+// ─── Date row ───
+.date-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 20px;
+
+  .date-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(108, 92, 231, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    ion-icon {
+      font-size: 16px;
+      color: #6C5CE7;
+    }
+  }
+
+  app-date-selector {
+    flex: 1;
+
+    .date-picker-wrapper {
+      ion-item {
+        --background: transparent;
+        --border-color: transparent;
+        --padding-start: 0;
+        --inner-padding-end: 0;
+      }
+    }
+  }
+}
+
+// ═══════════════════════════════════════
+// RECORDS
+// ═══════════════════════════════════════
+
+.records-zone {
+  padding: 16px 16px 0;
+}
+
+// ─── Empty state ───
+.records-empty {
+  text-align: center;
+  padding: 48px 24px;
+
+  .empty-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 22px;
+    background: rgba(108, 92, 231, 0.08);
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ion-icon { font-size: 32px; color: #6C5CE7; }
+  }
+
+  .empty-title {
+    margin: 0 0 8px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a2e;
+  }
+
+  .empty-sub {
+    margin: 0;
+    font-size: 14px;
+    color: #A4B0BE;
+    font-weight: 500;
+    line-height: 1.6;
+  }
+}
+
+.bottom-pad { height: 48px; }
+
+// ═══════════════════════════════════════
+// REACTION MODAL
+// ═══════════════════════════════════════
+
+.reaction-sheet {
+  padding: 12px 24px 36px;
+
+  .sheet-handle {
+    width: 36px;
+    height: 4px;
+    border-radius: 4px;
+    background: #E0E0E0;
+    margin: 0 auto 20px;
+  }
+
+  .reaction-vendor {
+    margin: 0 0 4px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a2e;
+    text-align: center;
+  }
+
+  .reaction-subtitle {
+    margin: 0 0 20px;
+    font-size: 13px;
+    color: #A4B0BE;
+    font-weight: 500;
+    text-align: center;
+  }
+}
+
+.reaction-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.reaction-btn {
+  font-size: 30px;
+  padding: 14px 0;
+  background: #F1F2F6;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+
+  &:active {
+    transform: scale(0.86);
+    background: rgba(108, 92, 231, 0.12);
+  }
+}

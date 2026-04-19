@@ -1,0 +1,143 @@
+<ion-header class="ion-no-border trans-header">
+  <ion-toolbar>
+    <div class="header-inner">
+      <button class="back-btn" type="button" (click)="goBack()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </button>
+      <span class="header-title">Nueva Transacción</span>
+      <div class="header-spacer"></div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="paymentMethods$ | async as methods">
+
+    <!-- ══════ EMPTY ══════ -->
+    <div class="empty-state" *ngIf="methods.length === 0">
+      <div class="empty-icon"><ion-icon name="card-outline"></ion-icon></div>
+      <p class="empty-title">Sin métodos de pago</p>
+      <p class="empty-sub">Agrega una tarjeta para poder realizar transacciones</p>
+      <ion-button routerLink="/add-payment-method">
+        <ion-icon name="add-outline" slot="start"></ion-icon>
+        Agregar Método
+      </ion-button>
+    </div>
+
+    <!-- ══════ FORM ══════ -->
+    <form *ngIf="methods.length > 0" [formGroup]="formData" (ngSubmit)="handleSubmit()">
+
+      <!-- AMOUNT HERO -->
+      <div class="amount-zone">
+        <div class="blob b1"></div>
+        <div class="blob b2"></div>
+        <div class="blob b3"></div>
+
+        <p class="amount-label">¿Cuánto vas a pagar?</p>
+
+        <div class="amount-display-row">
+          <span class="currency-sign">$</span>
+          <input
+            class="amount-input"
+            type="number"
+            inputmode="decimal"
+            placeholder="0"
+            formControlName="transactionAmount">
+        </div>
+
+        <div class="balance-available" *ngIf="selectedPayment">
+          <ion-icon name="wallet-outline"></ion-icon>
+          <span>Disponible:&nbsp;<strong>${{ selectedPayment.availableBalance | number:'1.0-0' }}</strong></span>
+        </div>
+
+        <div class="quick-amounts">
+          <button
+            class="q-amt"
+            *ngFor="let a of quickAmounts"
+            type="button"
+            [class.active]="formData.controls.transactionAmount.value === a"
+            (click)="setQuickAmount(a)">
+            ${{ a | number:'1.0-0' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- CONTENT SHEET -->
+      <div class="sheet">
+
+        <!-- Card selector -->
+        <div class="sheet-section">
+          <p class="section-label">
+            <ion-icon name="card-outline"></ion-icon>
+            Cobrar desde
+          </p>
+          <div class="cards-scroll">
+            <div
+              class="card-slide"
+              *ngFor="let m of methods; trackBy: trackById"
+              [class.is-active]="selectedPayment?.id === m.id"
+              (click)="selectCard(m)">
+              <app-payment-card
+                [paymentData]="m"
+                [hideBalance]="false"
+                [enableTilt]="false">
+              </app-payment-card>
+            </div>
+          </div>
+          <div class="dots-row" *ngIf="methods.length > 1">
+            <span
+              class="dot"
+              *ngFor="let m of methods"
+              [class.active]="selectedPayment?.id === m.id">
+            </span>
+          </div>
+        </div>
+
+        <!-- Vendor -->
+        <div class="sheet-section vendor-section">
+          <p class="section-label">
+            <ion-icon name="storefront-outline"></ion-icon>
+            ¿A quién pagas?
+          </p>
+          <div class="vendor-row">
+            <input
+              class="vendor-input"
+              type="text"
+              placeholder="Ej: Netflix, Amazon..."
+              autocapitalize="words"
+              formControlName="vendor">
+            <button class="shuffle-btn" type="button" (click)="handleRandomize()">
+              <ion-icon name="shuffle-outline"></ion-icon>
+            </button>
+          </div>
+          <div class="vendor-chips">
+            <button
+              class="vendor-chip"
+              *ngFor="let v of quickVendors"
+              type="button"
+              [class.active]="formData.controls.vendor.value === v"
+              (click)="setVendor(v)">
+              {{ v }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Pay button -->
+        <div class="pay-section">
+          <button class="pay-btn" type="submit" [disabled]="formData.invalid">
+            <ion-icon name="flash-outline"></ion-icon>
+            <span>
+              Transaccionar
+              <ng-container *ngIf="formData.controls.transactionAmount.value > 0">
+                &nbsp;·&nbsp;${{ formData.controls.transactionAmount.value | number:'1.0-0' }}
+              </ng-container>
+            </span>
+          </button>
+        </div>
+
+        <div class="bottom-pad"></div>
+      </div>
+
+    </form>
+  </ng-container>
+</ion-content>
