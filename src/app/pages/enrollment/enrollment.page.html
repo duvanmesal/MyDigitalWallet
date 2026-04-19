@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/authentication"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Crear Cuenta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="header-section">
+    <ion-icon name="person-add-outline"></ion-icon>
+    <h2>Crea tu cuenta</h2>
+    <p>Completa los datos para comenzar</p>
+  </div>
+
+  <form [formGroup]="formData" (ngSubmit)="handleSubmit()">
+    <ion-list lines="none">
+      <ion-item>
+        <ion-label position="stacked">Nombre</ion-label>
+        <ion-input formControlName="firstName" autocomplete="given-name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Apellido</ion-label>
+        <ion-input formControlName="familyName" autocomplete="family-name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Tipo de documento</ion-label>
+        <ion-select formControlName="documentCategory" interface="popover">
+          <ion-select-option *ngFor="let dt of identificationTypes" [value]="dt.value">
+            {{ dt.label }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Número de documento</ion-label>
+        <ion-input type="tel" inputmode="numeric" formControlName="documentId"></ion-input>
+      </ion-item>
+      <ion-note color="danger" *ngIf="formData.controls.documentId.touched && formData.controls.documentId.invalid">
+        Número de documento inválido
+      </ion-note>
+
+      <ion-item>
+        <ion-label position="stacked">País</ion-label>
+        <ion-input formControlName="country"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Correo Electrónico</ion-label>
+        <ion-input type="email" formControlName="emailAddress" autocomplete="email"></ion-input>
+      </ion-item>
+      <ion-note color="danger" *ngIf="formData.controls.emailAddress.touched && formData.controls.emailAddress.invalid">
+        Correo inválido
+      </ion-note>
+
+      <ion-item>
+        <ion-label position="stacked">Contraseña de Acceso</ion-label>
+        <ion-input type="password" formControlName="accessPassword" autocomplete="new-password"></ion-input>
+      </ion-item>
+      <ion-note color="danger" *ngIf="formData.controls.accessPassword.touched && formData.controls.accessPassword.invalid">
+        Mínimo 6 caracteres
+      </ion-note>
+    </ion-list>
+
+    <ion-button expand="block" type="submit" [disabled]="isProcessing">
+      <ion-spinner *ngIf="isProcessing" name="crescent"></ion-spinner>
+      <span *ngIf="!isProcessing">Registrarme</span>
+    </ion-button>
+
+    <ion-button expand="block" fill="clear" type="button" (click)="navigateToAuthentication()">
+      ¿Ya tienes cuenta? <strong>&nbsp;Inicia sesión</strong>
+    </ion-button>
+  </form>
+</ion-content>
