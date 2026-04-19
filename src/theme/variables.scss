@@ -1,2 +1,66 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+:root {
+  --ion-color-primary: #6C5CE7;
+  --ion-color-primary-rgb: 108, 92, 231;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #5A4BD4;
+  --ion-color-primary-tint: #7B6DE9;
+
+  --ion-color-secondary: #00CEC9;
+  --ion-color-secondary-rgb: 0, 206, 201;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #00B5B1;
+  --ion-color-secondary-tint: #1AD3CE;
+
+  --ion-color-tertiary: #FD79A8;
+  --ion-color-tertiary-rgb: 253, 121, 168;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #DF6A94;
+  --ion-color-tertiary-tint: #FD86B1;
+
+  --ion-color-success: #00B894;
+  --ion-color-success-rgb: 0, 184, 148;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #00A282;
+  --ion-color-success-tint: #1ABF9F;
+
+  --ion-color-warning: #FDCB6E;
+  --ion-color-warning-rgb: 253, 203, 110;
+  --ion-color-warning-contrast: #1a1a2e;
+  --ion-color-warning-contrast-rgb: 26, 26, 46;
+  --ion-color-warning-shade: #DFB361;
+  --ion-color-warning-tint: #FDD07D;
+
+  --ion-color-danger: #FF6B6B;
+  --ion-color-danger-rgb: 255, 107, 107;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #E05E5E;
+  --ion-color-danger-tint: #FF7A7A;
+
+  --ion-color-medium: #A4B0BE;
+  --ion-color-medium-rgb: 164, 176, 190;
+  --ion-color-medium-contrast: #1a1a2e;
+  --ion-color-medium-contrast-rgb: 26, 26, 46;
+  --ion-color-medium-shade: #909BA7;
+  --ion-color-medium-tint: #ADB8C5;
+
+  --ion-color-light: #F1F2F6;
+  --ion-color-light-rgb: 241, 242, 246;
+  --ion-color-light-contrast: #1a1a2e;
+  --ion-color-light-contrast-rgb: 26, 26, 46;
+  --ion-color-light-shade: #D4D5D8;
+  --ion-color-light-tint: #F3F4F7;
+
+  --ion-background-color: #F8F9FD;
+  --ion-text-color: #1a1a2e;
+  --ion-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --mdw-card-radius: 20px;
+  --mdw-shadow-sm: 0 2px 8px rgba(108, 92, 231, 0.08);
+  --mdw-shadow-md: 0 8px 24px rgba(108, 92, 231, 0.12);
+  --mdw-shadow-lg: 0 16px 48px rgba(108, 92, 231, 0.16);
+}
