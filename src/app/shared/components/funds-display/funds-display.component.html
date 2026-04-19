@@ -1,0 +1,22 @@
+<div class="hero ion-padding">
+  <p class="greeting">{{ greeting }}</p>
+  <h2 class="name">{{ clientName }}</h2>
+
+  <div class="balance-box">
+    <div>
+      <small>Saldo Total Disponible</small>
+      <h1>
+        <ng-container *ngIf="isVisible; else masked">
+          ${{ (totalFunds ?? 0) | number:'1.0-0' }}
+        </ng-container>
+        <ng-template #masked>••••••</ng-template>
+      </h1>
+    </div>
+    <ion-button fill="clear" color="light" (click)="onToggle.emit()">
+      <ion-icon
+        slot="icon-only"
+        [name]="isVisible ? 'eye-off-outline' : 'eye-outline'">
+      </ion-icon>
+    </ion-button>
+  </div>
+</div>

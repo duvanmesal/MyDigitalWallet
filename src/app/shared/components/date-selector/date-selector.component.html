@@ -1,0 +1,20 @@
+<div class="date-picker-wrapper">
+  <ion-item lines="none">
+    <ion-input
+      type="date"
+      [label]="label"
+      labelPlacement="stacked"
+      [placeholder]="placeholder"
+      [value]="selectedDate"
+      (ionChange)="handleChange($event)">
+    </ion-input>
+    <ion-button
+      *ngIf="selectedDate"
+      fill="clear"
+      slot="end"
+      size="small"
+      (click)="clearSelection()">
+      <ion-icon name="close-circle-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-item>
+</div>

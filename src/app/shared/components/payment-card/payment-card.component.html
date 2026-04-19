@@ -1,0 +1,90 @@
+<div class="card-container" [class.is-flipped]="isFlipped">
+  <!-- ======= FRENTE ======= -->
+  <div
+    class="plastic-card card-front"
+    [class.network-visa]="paymentData.paymentNetwork === 'visa'"
+    [class.network-mc]="paymentData.paymentNetwork === 'mastercard'">
+
+    <div class="card-shine"></div>
+    <div class="holographic-strip"></div>
+
+    <div class="row top">
+      <div class="chip-wrapper">
+        <span class="chip"></span>
+        <span class="contactless">
+          <ion-icon name="wifi-outline"></ion-icon>
+        </span>
+      </div>
+      <span class="network">{{ networkDisplay }}</span>
+    </div>
+
+    <div class="cardnumber">
+      <span class="group">••••</span>
+      <span class="group">••••</span>
+      <span class="group">••••</span>
+      <span class="group last">{{ paymentData.cardTail }}</span>
+    </div>
+
+    <div class="row bottom">
+      <div class="cardholder">
+        <small>TITULAR</small>
+        <span>{{ paymentData.cardholderName }}</span>
+      </div>
+      <div class="funds" *ngIf="!hideBalance">
+        <small>SALDO</small>
+        <strong>${{ paymentData.availableBalance | number:'1.0-0' }}</strong>
+      </div>
+    </div>
+
+    <button class="flip-btn" (click)="toggleFlip($event)" type="button">
+      <ion-icon name="sync-outline"></ion-icon>
+    </button>
+  </div>
+
+  <!-- ======= RESPALDO ======= -->
+  <div
+    class="plastic-card card-back"
+    [class.network-visa]="paymentData.paymentNetwork === 'visa'"
+    [class.network-mc]="paymentData.paymentNetwork === 'mastercard'">
+
+    <div class="magnetic-strip"></div>
+
+    <div class="signature-panel">
+      <div class="signature-area">
+        <span class="signature-text">{{ paymentData.cardholderName }}</span>
+      </div>
+      <div class="cvv-box">
+        <small>CVV</small>
+        <span>•••</span>
+      </div>
+    </div>
+
+    <div class="back-info">
+      <div class="info-row">
+        <div class="info-item">
+          <small>VENCIMIENTO</small>
+          <span>{{ expirationDisplay }}</span>
+        </div>
+        <div class="info-item">
+          <small>RED</small>
+          <span>{{ networkDisplay }}</span>
+        </div>
+        <div class="info-item">
+          <small>TARJETA</small>
+          <span>•••• {{ paymentData.cardTail }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="back-footer">
+      <small>Esta tarjeta es propiedad de MyDigitalWallet</small>
+      <div class="barcode">
+        <div *ngFor="let b of barcodeBars" class="bar" [style.width.px]="b"></div>
+      </div>
+    </div>
+
+    <button class="flip-btn back" (click)="toggleFlip($event)" type="button">
+      <ion-icon name="sync-outline"></ion-icon>
+    </button>
+  </div>
+</div>

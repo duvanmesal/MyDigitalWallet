@@ -1,0 +1,19 @@
+<div class="custom-field" [class.has-error]="showError && isTouched">
+  <ion-item lines="full">
+    <ion-label position="stacked">{{ label }}</ion-label>
+    <ion-input
+      [type]="inputType"
+      [placeholder]="placeholder"
+      [autocomplete]="autocomplete"
+      [maxlength]="maxLength ?? null"
+      [inputmode]="inputMode ?? null"
+      [disabled]="isDisabled"
+      [value]="currentValue"
+      (ionInput)="handleInput($any($event))"
+      (ionBlur)="handleBlur()">
+    </ion-input>
+  </ion-item>
+  <ion-note color="danger" *ngIf="showError && isTouched && errorMessage">
+    {{ errorMessage }}
+  </ion-note>
+</div>

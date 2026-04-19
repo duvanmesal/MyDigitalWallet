@@ -1,0 +1,17 @@
+.date-picker-wrapper {
+  width: 100%;
+
+  ion-item {
+    --background: transparent;
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --border-color: transparent;
+
+    ion-button {
+      --color: #A4B0BE;
+      margin-top: 20px;
+      --padding-start: 4px;
+      --padding-end: 4px;
+    }
+  }
+}

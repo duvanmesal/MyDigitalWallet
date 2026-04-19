@@ -1,0 +1,18 @@
+<div class="transaction-entry">
+  <div class="entry-icon" [class.has-reaction]="record.reactionEmoji">
+    <span *ngIf="record.reactionEmoji; else fallbackIcon">{{ record.reactionEmoji }}</span>
+    <ng-template #fallbackIcon>
+      <ion-icon name="cart-outline"></ion-icon>
+    </ng-template>
+  </div>
+  <div class="entry-details">
+    <p class="vendor-name">{{ record.vendor }}</p>
+    <small class="meta-info">
+      •••• {{ record.methodCardTail }} · {{ record.timestamp | date:'dd MMM, h:mm a' }}
+    </small>
+  </div>
+  <div class="entry-amount">
+    <span class="amount">-${{ record.transactionAmount | number:'1.0-0' }}</span>
+    <small class="hint">Mantén presionado</small>
+  </div>
+</div>

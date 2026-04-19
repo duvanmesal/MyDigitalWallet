@@ -1,0 +1,33 @@
+.record-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.record-empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: #A4B0BE;
+
+  .empty-wrap {
+    width: 72px;
+    height: 72px;
+    border-radius: 22px;
+    background: rgba(108, 92, 231, 0.08);
+    margin: 0 auto 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ion-icon {
+      font-size: 32px;
+      color: #6C5CE7;
+    }
+  }
+
+  p {
+    font-size: 15px;
+    font-weight: 500;
+    margin: 0;
+  }
+}

@@ -1,0 +1,27 @@
+.custom-field {
+  margin-bottom: 6px;
+
+  ion-item {
+    --background: #fff;
+    --border-radius: 14px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    box-shadow: 0 2px 8px rgba(108, 92, 231, 0.06);
+    --border-color: transparent;
+    transition: box-shadow 0.2s ease;
+  }
+
+  &.has-error {
+    ion-item {
+      --border-color: var(--ion-color-danger);
+      box-shadow: 0 2px 12px rgba(255, 107, 107, 0.15);
+    }
+  }
+
+  ion-note {
+    display: block;
+    padding: 4px 16px 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+}

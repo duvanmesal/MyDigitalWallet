@@ -1,0 +1,15 @@
+<div class="record-list" *ngIf="recordsList.length > 0; else emptyTpl">
+  <app-transaction-item
+    *ngFor="let record of recordsList; trackBy: trackById"
+    [record]="record"
+    (longPressed)="recordLongPressed.emit(record)">
+  </app-transaction-item>
+</div>
+<ng-template #emptyTpl>
+  <div class="record-empty">
+    <div class="empty-wrap">
+      <ion-icon name="receipt-outline"></ion-icon>
+    </div>
+    <p>Sin movimientos registrados</p>
+  </div>
+</ng-template>

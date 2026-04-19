@@ -1,0 +1,11 @@
+<div class="main-actions">
+  <button
+    *ngFor="let a of actionList; trackBy: trackByKey"
+    class="action-btn"
+    (click)="actionTriggered.emit(a.key)">
+    <div class="icon-wrapper">
+      <ion-icon [name]="a.icon"></ion-icon>
+    </div>
+    <span>{{ a.label }}</span>
+  </button>
+</div>

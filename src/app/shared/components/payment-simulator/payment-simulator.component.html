@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Simular Transacción</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancelSimulation()">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="simulationForm">
+    <ion-list lines="none">
+      <ion-item>
+        <ion-select
+          label="Método de Pago"
+          labelPlacement="stacked"
+          placeholder="Selecciona uno"
+          formControlName="paymentMethodId">
+          <ion-select-option *ngFor="let m of availableMethods$ | async" [value]="m.id">
+            {{ m.paymentNetwork | uppercase }} •••• {{ m.cardTail }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          label="Proveedor"
+          labelPlacement="stacked"
+          placeholder="Ej: Netflix"
+          formControlName="vendor">
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          type="number"
+          label="Monto (COP)"
+          labelPlacement="stacked"
+          placeholder="10000"
+          formControlName="transactionAmount">
+        </ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-button expand="block" fill="outline" (click)="generateRandom()" class="ion-margin-top">
+      <ion-icon name="shuffle-outline" slot="start"></ion-icon>
+      Aleatorio
+    </ion-button>
+
+    <ion-button expand="block" (click)="confirmSimulation()" class="ion-margin-top">
+      <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+      Usar Simulación
+    </ion-button>
+  </form>
+</ion-content>

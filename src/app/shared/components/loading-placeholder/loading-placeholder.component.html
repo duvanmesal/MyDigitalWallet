@@ -1,0 +1,13 @@
+<div class="placeholder-wrap" [class.list]="variant === 'list'">
+  <div *ngFor="let i of items" class="placeholder" [class.card]="variant === 'card'"
+       [class.line]="variant === 'line'" [class.row]="variant === 'list'">
+    <ng-container *ngIf="variant === 'list'">
+      <ion-skeleton-text animated style="width:40px;height:40px;border-radius:8px;"></ion-skeleton-text>
+      <div class="col">
+        <ion-skeleton-text animated style="width:60%"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width:40%"></ion-skeleton-text>
+      </div>
+    </ng-container>
+    <ion-skeleton-text *ngIf="variant !== 'list'" animated></ion-skeleton-text>
+  </div>
+</div>
