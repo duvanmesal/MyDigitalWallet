@@ -1,10 +1,10 @@
-<ion-header class="ion-no-border trans-header">
+<ion-header class="ion-no-border pay-header">
   <ion-toolbar>
     <div class="header-inner">
       <button class="back-btn" type="button" (click)="goBack()">
-        <ion-icon name="chevron-back-outline"></ion-icon>
+        <ion-icon name="arrow-back"></ion-icon>
       </button>
-      <span class="header-title">Nueva Transacción</span>
+      <span class="header-title">Pagar</span>
       <div class="header-spacer"></div>
     </div>
   </ion-toolbar>
@@ -13,129 +13,98 @@
 <ion-content>
   <ng-container *ngIf="paymentMethods$ | async as methods">
 
-    <!-- ══════ EMPTY ══════ -->
+    <!-- ══════ EMPTY STATE ══════ -->
     <div class="empty-state" *ngIf="methods.length === 0">
-      <div class="empty-icon"><ion-icon name="card-outline"></ion-icon></div>
-      <p class="empty-title">Sin métodos de pago</p>
-      <p class="empty-sub">Agrega una tarjeta para poder realizar transacciones</p>
-      <ion-button routerLink="/add-payment-method">
-        <ion-icon name="add-outline" slot="start"></ion-icon>
-        Agregar Método
-      </ion-button>
+      <div class="empty-box">
+        <ion-icon name="card-outline"></ion-icon>
+        <p class="empty-title">Sin métodos de pago</p>
+        <p class="empty-sub">Agrega una tarjeta para realizar transacciones</p>
+      </div>
+      <button class="neo-btn outline" routerLink="/add-payment-method">
+        <span>＋</span> AGREGAR MÉTODO
+      </button>
     </div>
 
-    <!-- ══════ FORM ══════ -->
+    <!-- ══════ CHECKOUT FORM ══════ -->
     <form *ngIf="methods.length > 0" [formGroup]="formData" (ngSubmit)="handleSubmit()">
 
-      <!-- AMOUNT HERO -->
-      <div class="amount-zone">
-        <div class="blob b1"></div>
-        <div class="blob b2"></div>
-        <div class="blob b3"></div>
+      <!-- Card Selection -->
+      <section class="card-selection">
+        <p class="section-label">// TARJETA CON LA QUE PAGAS</p>
+        <div class="cards-row">
+          <button
+            type="button"
+            class="card-option"
+            *ngFor="let m of methods; trackBy: trackById"
+            [class.active]="selectedPayment?.id === m.id"
+            (click)="selectCard(m)">
+            <div class="card-tail">•••• {{ m.cardTail }}</div>
+            <div class="card-balance">${{ m.availableBalance | number:'1.0-0' }}</div>
+            <span class="card-type-tag" *ngIf="selectedPayment?.id === m.id">
+              {{ m.paymentNetwork === 'visa' ? 'PRINCIPAL' : 'GASTOS' }}
+            </span>
+          </button>
+        </div>
+      </section>
 
-        <p class="amount-label">¿Cuánto vas a pagar?</p>
+      <!-- Vendor Input -->
+      <section class="vendor-section">
+        <p class="section-label">// COMERCIO / VENDEDOR</p>
+        <div class="vendor-input-row">
+          <input
+            class="neo-input"
+            type="text"
+            formControlName="vendor"
+            placeholder="Ej. Carulla"
+            autocapitalize="words">
+        </div>
+      </section>
 
-        <div class="amount-display-row">
-          <span class="currency-sign">$</span>
+      <!-- Amount Input -->
+      <section class="amount-section">
+        <p class="section-label">// MONTO (COP)</p>
+        <div class="amount-input-row">
+          <span class="currency">$</span>
           <input
             class="amount-input"
             type="number"
             inputmode="decimal"
-            placeholder="0"
-            formControlName="transactionAmount">
+            formControlName="transactionAmount"
+            placeholder="0">
+          <span class="currency-label">COP</span>
         </div>
 
-        <div class="balance-available" *ngIf="selectedPayment">
-          <ion-icon name="wallet-outline"></ion-icon>
-          <span>Disponible:&nbsp;<strong>${{ selectedPayment.availableBalance | number:'1.0-0' }}</strong></span>
+        <div class="random-toggle">
+          <input type="checkbox" id="randomAmount" (change)="handleRandomize()">
+          <label for="randomAmount">SUGERIR PAGO ALEATORIO</label>
         </div>
+      </section>
 
-        <div class="quick-amounts">
-          <button
-            class="q-amt"
-            *ngFor="let a of quickAmounts"
-            type="button"
-            [class.active]="formData.controls.transactionAmount.value === a"
-            (click)="setQuickAmount(a)">
-            ${{ a | number:'1.0-0' }}
-          </button>
+      <!-- Summary -->
+      <section class="summary-section">
+        <div class="summary-row">
+          <span class="summary-label">MONTO A PAGAR</span>
+          <span class="summary-value">${{ formData.controls.transactionAmount.value || 0 | number:'1.0-0' }}</span>
         </div>
+        <div class="summary-status">
+          {{ selectedPayment ? ('PAGANDO CON •••• ' + selectedPayment.cardTail) : 'ESPERANDO COMERCIO...' }}
+        </div>
+      </section>
+
+      <!-- Biometric Notice -->
+      <div class="bio-notice">
+        <ion-icon name="shield-checkmark-outline"></ion-icon>
+        <span>Se pedirá autenticación biométrica</span>
       </div>
 
-      <!-- CONTENT SHEET -->
-      <div class="sheet">
-
-        <!-- Card selector -->
-        <div class="sheet-section">
-          <p class="section-label">
-            <ion-icon name="card-outline"></ion-icon>
-            Cobrar desde
-          </p>
-          <div class="cards-scroll">
-            <div
-              class="card-slide"
-              *ngFor="let m of methods; trackBy: trackById"
-              [class.is-active]="selectedPayment?.id === m.id"
-              (click)="selectCard(m)">
-              <app-payment-card
-                [paymentData]="m"
-                [hideBalance]="false"
-                [enableTilt]="false">
-              </app-payment-card>
-            </div>
-          </div>
-          <div class="dots-row" *ngIf="methods.length > 1">
-            <span
-              class="dot"
-              *ngFor="let m of methods"
-              [class.active]="selectedPayment?.id === m.id">
-            </span>
-          </div>
-        </div>
-
-        <!-- Vendor -->
-        <div class="sheet-section vendor-section">
-          <p class="section-label">
-            <ion-icon name="storefront-outline"></ion-icon>
-            ¿A quién pagas?
-          </p>
-          <div class="vendor-row">
-            <input
-              class="vendor-input"
-              type="text"
-              placeholder="Ej: Netflix, Amazon..."
-              autocapitalize="words"
-              formControlName="vendor">
-            <button class="shuffle-btn" type="button" (click)="handleRandomize()">
-              <ion-icon name="shuffle-outline"></ion-icon>
-            </button>
-          </div>
-          <div class="vendor-chips">
-            <button
-              class="vendor-chip"
-              *ngFor="let v of quickVendors"
-              type="button"
-              [class.active]="formData.controls.vendor.value === v"
-              (click)="setVendor(v)">
-              {{ v }}
-            </button>
-          </div>
-        </div>
-
-        <!-- Pay button -->
-        <div class="pay-section">
-          <button class="pay-btn" type="submit" [disabled]="formData.invalid">
-            <ion-icon name="flash-outline"></ion-icon>
-            <span>
-              Transaccionar
-              <ng-container *ngIf="formData.controls.transactionAmount.value > 0">
-                &nbsp;·&nbsp;${{ formData.controls.transactionAmount.value | number:'1.0-0' }}
-              </ng-container>
-            </span>
-          </button>
-        </div>
-
-        <div class="bottom-pad"></div>
+      <!-- Submit -->
+      <div class="submit-section">
+        <button
+          class="neo-btn primary large"
+          type="submit"
+          [disabled]="formData.invalid">
+          CONFIRMAR PAGO · ${{ formData.controls.transactionAmount.value || 0 | number:'1.0-0' }}
+        </button>
       </div>
 
     </form>

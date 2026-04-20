@@ -1,66 +1,100 @@
+// ══════════════════════════════════════════════════════════════════
+// DIGITAL WALLET v2.0 — DESIGN SYSTEM
+// GLASSMORPHISM × NEO-BRUTALISM
+// ══════════════════════════════════════════════════════════════════
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
 :root {
-  --ion-color-primary: #6C5CE7;
-  --ion-color-primary-rgb: 108, 92, 231;
+  // ─── Primary / Accent ───
+  --ion-color-primary: #FF3366;
+  --ion-color-primary-rgb: 255, 51, 102;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #5A4BD4;
-  --ion-color-primary-tint: #7B6DE9;
+  --ion-color-primary-shade: #E02D5A;
+  --ion-color-primary-tint: #FF4775;
 
-  --ion-color-secondary: #00CEC9;
-  --ion-color-secondary-rgb: 0, 206, 201;
+  // ─── Secondary (Visa Blue) ───
+  --ion-color-secondary: #2C4BFF;
+  --ion-color-secondary-rgb: 44, 75, 255;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
-  --ion-color-secondary-shade: #00B5B1;
-  --ion-color-secondary-tint: #1AD3CE;
+  --ion-color-secondary-shade: #2642E0;
+  --ion-color-secondary-tint: #415DFF;
 
-  --ion-color-tertiary: #FD79A8;
-  --ion-color-tertiary-rgb: 253, 121, 168;
+  // ─── Tertiary ───
+  --ion-color-tertiary: #0A0A0A;
+  --ion-color-tertiary-rgb: 10, 10, 10;
   --ion-color-tertiary-contrast: #ffffff;
   --ion-color-tertiary-contrast-rgb: 255, 255, 255;
-  --ion-color-tertiary-shade: #DF6A94;
-  --ion-color-tertiary-tint: #FD86B1;
+  --ion-color-tertiary-shade: #090909;
+  --ion-color-tertiary-tint: #232323;
 
-  --ion-color-success: #00B894;
-  --ion-color-success-rgb: 0, 184, 148;
+  // ─── Success ───
+  --ion-color-success: #00B37A;
+  --ion-color-success-rgb: 0, 179, 122;
   --ion-color-success-contrast: #ffffff;
   --ion-color-success-contrast-rgb: 255, 255, 255;
-  --ion-color-success-shade: #00A282;
-  --ion-color-success-tint: #1ABF9F;
+  --ion-color-success-shade: #009E6B;
+  --ion-color-success-tint: #1ABB87;
 
-  --ion-color-warning: #FDCB6E;
-  --ion-color-warning-rgb: 253, 203, 110;
-  --ion-color-warning-contrast: #1a1a2e;
-  --ion-color-warning-contrast-rgb: 26, 26, 46;
-  --ion-color-warning-shade: #DFB361;
-  --ion-color-warning-tint: #FDD07D;
+  // ─── Warning ───
+  --ion-color-warning: #FFB800;
+  --ion-color-warning-rgb: 255, 184, 0;
+  --ion-color-warning-contrast: #0A0A0A;
+  --ion-color-warning-contrast-rgb: 10, 10, 10;
+  --ion-color-warning-shade: #E0A200;
+  --ion-color-warning-tint: #FFBF1A;
 
-  --ion-color-danger: #FF6B6B;
-  --ion-color-danger-rgb: 255, 107, 107;
+  // ─── Danger (Mastercard Red) ───
+  --ion-color-danger: #FF3D4D;
+  --ion-color-danger-rgb: 255, 61, 77;
   --ion-color-danger-contrast: #ffffff;
   --ion-color-danger-contrast-rgb: 255, 255, 255;
-  --ion-color-danger-shade: #E05E5E;
-  --ion-color-danger-tint: #FF7A7A;
+  --ion-color-danger-shade: #E03644;
+  --ion-color-danger-tint: #FF505F;
 
-  --ion-color-medium: #A4B0BE;
-  --ion-color-medium-rgb: 164, 176, 190;
-  --ion-color-medium-contrast: #1a1a2e;
-  --ion-color-medium-contrast-rgb: 26, 26, 46;
-  --ion-color-medium-shade: #909BA7;
-  --ion-color-medium-tint: #ADB8C5;
+  // ─── Medium ───
+  --ion-color-medium: #6B7280;
+  --ion-color-medium-rgb: 107, 114, 128;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #5E6470;
+  --ion-color-medium-tint: #7A808D;
 
-  --ion-color-light: #F1F2F6;
-  --ion-color-light-rgb: 241, 242, 246;
-  --ion-color-light-contrast: #1a1a2e;
-  --ion-color-light-contrast-rgb: 26, 26, 46;
-  --ion-color-light-shade: #D4D5D8;
-  --ion-color-light-tint: #F3F4F7;
+  // ─── Light ───
+  --ion-color-light: #F4F1EA;
+  --ion-color-light-rgb: 244, 241, 234;
+  --ion-color-light-contrast: #0A0A0A;
+  --ion-color-light-contrast-rgb: 10, 10, 10;
+  --ion-color-light-shade: #D7D4CE;
+  --ion-color-light-tint: #F6F3EC;
 
-  --ion-background-color: #F8F9FD;
-  --ion-text-color: #1a1a2e;
-  --ion-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  // ─── Base Colors ───
+  --ion-background-color: #F4F1EA;
+  --ion-text-color: #0A0A0A;
 
-  --mdw-card-radius: 20px;
-  --mdw-shadow-sm: 0 2px 8px rgba(108, 92, 231, 0.08);
-  --mdw-shadow-md: 0 8px 24px rgba(108, 92, 231, 0.12);
-  --mdw-shadow-lg: 0 16px 48px rgba(108, 92, 231, 0.16);
+  // ─── Custom Design Tokens ───
+  --dw-accent: #FF3366;
+  --dw-ink: #0A0A0A;
+  --dw-paper: #F4F1EA;
+  --dw-visa: #2C4BFF;
+  --dw-mastercard: #FF3D4D;
+  --dw-success: #00B37A;
+
+  // ─── Typography ───
+  --ion-font-family: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
+  --dw-font-display: 'Space Grotesk', sans-serif;
+  --dw-font-body: 'Inter Tight', sans-serif;
+  --dw-font-mono: 'JetBrains Mono', monospace;
+
+  // ─── Neo-Brutalist: No rounded corners ───
+  --dw-radius: 0px;
+  --dw-border: 3px solid var(--dw-ink);
+  --dw-border-thin: 2px solid var(--dw-ink);
+
+  // ─── Shadows (hard drop shadows for neo-brutalism) ───
+  --dw-shadow-sm: 4px 4px 0 var(--dw-ink);
+  --dw-shadow-md: 6px 6px 0 var(--dw-ink);
+  --dw-shadow-lg: 8px 8px 0 var(--dw-ink);
 }

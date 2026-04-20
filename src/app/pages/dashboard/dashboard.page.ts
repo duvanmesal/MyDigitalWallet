@@ -40,6 +40,7 @@ export class DashboardPage implements OnInit {
   biometryAvailable = false;
   biometryEnabled = false;
   selectedCard: PaymentMethod | null = null;
+  currentCardIndex = 0;
 
   // Edit modal
   editingPayment: PaymentMethod | null = null;
@@ -91,8 +92,11 @@ export class DashboardPage implements OnInit {
     this.showBalance = !this.showBalance;
   }
 
-  selectCard(m: PaymentMethod): void {
+  selectCard(m: PaymentMethod, index?: number): void {
     this.selectedCard = m;
+    if (index !== undefined) {
+      this.currentCardIndex = index;
+    }
   }
 
   async handleBiometryToggle(): Promise<void> {

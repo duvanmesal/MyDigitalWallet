@@ -1,68 +1,104 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Inicia Sesión</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="auth-content">
+  <div class="auth-container">
 
-<ion-content class="ion-padding">
-  <div class="logo-section">
-    <div class="logo-circle">
-      <ion-icon name="wallet-outline"></ion-icon>
+    <!-- ══════ HERO ══════ -->
+    <div class="hero-section">
+      <div class="brand">
+        <span class="brand-prefix">digital/</span>
+        <span class="brand-name">wallet</span>
+      </div>
+
+      <h1 class="hero-title">
+        Tu dinero.<br>
+        <span class="accent">bien hecho.</span>
+      </h1>
+
+      <span class="version-tag">V2.0 · NEW</span>
     </div>
-    <h1>MyDigitalWallet</h1>
-    <p>Tu billetera digital segura</p>
+
+    <!-- ══════ FORM ══════ -->
+    <div class="form-section">
+      <p class="form-label">// INGRESA A TU CUENTA</p>
+
+      <form [formGroup]="formData" (ngSubmit)="handleSubmit()">
+
+        <!-- Email -->
+        <div class="field-group">
+          <label class="field-label">CORREO ELECTRÓNICO</label>
+          <input
+            class="neo-input"
+            type="email"
+            formControlName="emailAddress"
+            autocomplete="email"
+            placeholder="jose.carlos@mail.co">
+          <span class="field-error" *ngIf="formData.controls.emailAddress.touched && formData.controls.emailAddress.invalid">
+            Correo no válido
+          </span>
+        </div>
+
+        <!-- Password -->
+        <div class="field-group">
+          <label class="field-label">CONTRASEÑA</label>
+          <input
+            class="neo-input"
+            type="password"
+            formControlName="accessPassword"
+            autocomplete="current-password"
+            placeholder="••••••••">
+          <span class="field-hint">Mínimo 8 caracteres</span>
+          <span class="field-error" *ngIf="formData.controls.accessPassword.touched && formData.controls.accessPassword.invalid">
+            Mínimo 6 caracteres
+          </span>
+        </div>
+
+        <!-- Biometric Toggle -->
+        <div class="field-group biometric-row" *ngIf="biometryAvailable">
+          <label class="field-label">BIOMÉTRICO</label>
+          <div class="bio-hint">Face ID · Huella</div>
+        </div>
+
+        <!-- Submit -->
+        <button class="neo-btn primary" type="submit" [disabled]="isProcessing">
+          <ion-spinner *ngIf="isProcessing" name="crescent"></ion-spinner>
+          <ng-container *ngIf="!isProcessing">
+            ENTRAR
+            <span class="btn-arrow">→</span>
+          </ng-container>
+        </button>
+
+        <!-- Divider -->
+        <div class="divider">
+          <span>O</span>
+        </div>
+
+        <!-- Google -->
+        <button
+          class="neo-btn outline"
+          type="button"
+          (click)="handleGoogleSignIn()"
+          [disabled]="isProcessing">
+          CONTINUAR CON GOOGLE
+        </button>
+
+        <!-- Biometry Button -->
+        <button
+          *ngIf="biometryAvailable"
+          class="neo-btn outline"
+          type="button"
+          (click)="handleBiometricSignIn()"
+          [disabled]="isProcessing">
+          <ion-icon name="finger-print"></ion-icon>
+          BIOMÉTRICO
+        </button>
+
+        <!-- Sign Up Link -->
+        <p class="signup-link">
+          ¿Aún no tienes cuenta?
+          <button type="button" class="link-btn" (click)="navigateToEnrollment()">Crear cuenta</button>
+        </p>
+
+      </form>
+    </div>
+
   </div>
-
-  <form [formGroup]="formData" (ngSubmit)="handleSubmit()">
-    <ion-list lines="none">
-      <ion-item>
-        <ion-label position="stacked">Correo Electrónico</ion-label>
-        <ion-input type="email" formControlName="emailAddress" autocomplete="email"></ion-input>
-      </ion-item>
-      <ion-note color="danger" *ngIf="formData.controls.emailAddress.touched && formData.controls.emailAddress.invalid">
-        Correo no válido
-      </ion-note>
-
-      <ion-item>
-        <ion-label position="stacked">Contraseña de Acceso</ion-label>
-        <ion-input type="password" formControlName="accessPassword" autocomplete="current-password"></ion-input>
-      </ion-item>
-      <ion-note color="danger" *ngIf="formData.controls.accessPassword.touched && formData.controls.accessPassword.invalid">
-        Mínimo 6 caracteres
-      </ion-note>
-    </ion-list>
-
-    <ion-button expand="block" type="submit" [disabled]="isProcessing">
-      <ion-spinner *ngIf="isProcessing" name="crescent"></ion-spinner>
-      <span *ngIf="!isProcessing">Acceder</span>
-    </ion-button>
-
-    <ion-button
-      expand="block"
-      fill="outline"
-      type="button"
-      color="danger"
-      (click)="handleGoogleSignIn()"
-      [disabled]="isProcessing"
-      class="ion-margin-top">
-      <ion-icon name="logo-google" slot="start"></ion-icon>
-      Continuar con Google
-    </ion-button>
-
-    <ion-button
-      *ngIf="biometryAvailable"
-      expand="block"
-      fill="outline"
-      type="button"
-      (click)="handleBiometricSignIn()"
-      [disabled]="isProcessing"
-      class="biometry-btn ion-margin-top">
-      <ion-icon name="finger-print" slot="start"></ion-icon>
-      Ingresar con Biometría
-    </ion-button>
-
-    <ion-button expand="block" fill="clear" type="button" (click)="navigateToEnrollment()">
-      ¿No tienes cuenta? <strong>&nbsp;Regístrate</strong>
-    </ion-button>
-  </form>
 </ion-content>

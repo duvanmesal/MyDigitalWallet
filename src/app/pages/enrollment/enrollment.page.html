@@ -1,77 +1,148 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/authentication"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Crear Cuenta</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="enroll-content">
+  <div class="enroll-container">
 
-<ion-content class="ion-padding">
-  <div class="header-section">
-    <ion-icon name="person-add-outline"></ion-icon>
-    <h2>Crea tu cuenta</h2>
-    <p>Completa los datos para comenzar</p>
+    <!-- ══════ HEADER ══════ -->
+    <div class="header-section">
+      <button class="back-btn" type="button" (click)="navigateToAuthentication()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+
+      <div class="header-text">
+        <h1 class="page-title">Crea tu cuenta</h1>
+        <p class="page-subtitle">// SIGN UP — PASO 1 DE 1</p>
+      </div>
+    </div>
+
+    <!-- ══════ FORM ══════ -->
+    <div class="form-section">
+      <form [formGroup]="formData" (ngSubmit)="handleSubmit()">
+
+        <!-- Name Row -->
+        <div class="field-row-split">
+          <div class="field-group">
+            <label class="field-label">NOMBRES</label>
+            <input
+              class="neo-input"
+              type="text"
+              formControlName="firstName"
+              autocomplete="given-name"
+              placeholder="José">
+          </div>
+          <div class="field-group">
+            <label class="field-label">APELLIDOS</label>
+            <input
+              class="neo-input"
+              type="text"
+              formControlName="familyName"
+              autocomplete="family-name"
+              placeholder="Carlos">
+          </div>
+        </div>
+
+        <!-- Document Type + Number -->
+        <div class="field-row-split">
+          <div class="field-group" style="flex: 0.4;">
+            <label class="field-label">TIPO DOC.</label>
+            <div class="neo-select-wrapper">
+              <select class="neo-select" formControlName="documentCategory">
+                <option *ngFor="let dt of identificationTypes" [value]="dt.value">
+                  {{ dt.label }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="field-group" style="flex: 0.6;">
+            <label class="field-label">NÚMERO DE DOCUMENTO</label>
+            <input
+              class="neo-input mono"
+              type="tel"
+              inputmode="numeric"
+              formControlName="documentId"
+              placeholder="1010654321">
+            <span class="field-error" *ngIf="formData.controls.documentId.touched && formData.controls.documentId.invalid">
+              Número inválido
+            </span>
+          </div>
+        </div>
+
+        <!-- Country -->
+        <div class="field-group">
+          <label class="field-label">PAÍS</label>
+          <div class="neo-select-wrapper country">
+            <span class="flag">🇨🇴</span>
+            <input
+              class="neo-input with-flag"
+              type="text"
+              formControlName="country"
+              placeholder="Colombia">
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="field-group">
+          <label class="field-label">CORREO</label>
+          <input
+            class="neo-input"
+            type="email"
+            formControlName="emailAddress"
+            autocomplete="email"
+            placeholder="tu@correo.com">
+          <span class="field-error" *ngIf="formData.controls.emailAddress.touched && formData.controls.emailAddress.invalid">
+            Correo inválido
+          </span>
+        </div>
+
+        <!-- Password -->
+        <div class="field-group">
+          <label class="field-label">CONTRASEÑA</label>
+          <input
+            class="neo-input"
+            type="password"
+            formControlName="accessPassword"
+            autocomplete="new-password"
+            placeholder="8+ caracteres · 1 mayúscula · 1 número">
+          <span class="field-error" *ngIf="formData.controls.accessPassword.touched && formData.controls.accessPassword.invalid">
+            Mínimo 6 caracteres
+          </span>
+        </div>
+
+        <!-- Terms -->
+        <div class="terms-row">
+          <div class="checkbox-neo">
+            <input type="checkbox" id="terms" checked>
+            <span class="check-mark"></span>
+          </div>
+          <label for="terms" class="terms-text">
+            Acepto los <strong>Términos</strong>, la <strong>Política de Privacidad</strong> y
+            el uso de mis datos biométricos.
+          </label>
+        </div>
+
+        <!-- Card Badge Preview -->
+        <div class="card-badge-preview">
+          <span class="badge-label">TARJETA INSIGNIA</span>
+          <div class="mini-card">
+            <div class="card-name">{{ formData.controls.firstName.value || 'José' }}{{ formData.controls.familyName.value || 'Carlos' }}</div>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button class="neo-btn primary" type="submit" [disabled]="isProcessing">
+          <ion-spinner *ngIf="isProcessing" name="crescent"></ion-spinner>
+          <ng-container *ngIf="!isProcessing">
+            CREAR CUENTA
+            <span class="btn-arrow">→</span>
+          </ng-container>
+        </button>
+
+        <!-- Login Link -->
+        <p class="login-link">
+          ¿Ya tienes cuenta?
+          <button type="button" class="link-btn" (click)="navigateToAuthentication()">Entrar</button>
+        </p>
+
+      </form>
+    </div>
+
   </div>
-
-  <form [formGroup]="formData" (ngSubmit)="handleSubmit()">
-    <ion-list lines="none">
-      <ion-item>
-        <ion-label position="stacked">Nombre</ion-label>
-        <ion-input formControlName="firstName" autocomplete="given-name"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="stacked">Apellido</ion-label>
-        <ion-input formControlName="familyName" autocomplete="family-name"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="stacked">Tipo de documento</ion-label>
-        <ion-select formControlName="documentCategory" interface="popover">
-          <ion-select-option *ngFor="let dt of identificationTypes" [value]="dt.value">
-            {{ dt.label }}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="stacked">Número de documento</ion-label>
-        <ion-input type="tel" inputmode="numeric" formControlName="documentId"></ion-input>
-      </ion-item>
-      <ion-note color="danger" *ngIf="formData.controls.documentId.touched && formData.controls.documentId.invalid">
-        Número de documento inválido
-      </ion-note>
-
-      <ion-item>
-        <ion-label position="stacked">País</ion-label>
-        <ion-input formControlName="country"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="stacked">Correo Electrónico</ion-label>
-        <ion-input type="email" formControlName="emailAddress" autocomplete="email"></ion-input>
-      </ion-item>
-      <ion-note color="danger" *ngIf="formData.controls.emailAddress.touched && formData.controls.emailAddress.invalid">
-        Correo inválido
-      </ion-note>
-
-      <ion-item>
-        <ion-label position="stacked">Contraseña de Acceso</ion-label>
-        <ion-input type="password" formControlName="accessPassword" autocomplete="new-password"></ion-input>
-      </ion-item>
-      <ion-note color="danger" *ngIf="formData.controls.accessPassword.touched && formData.controls.accessPassword.invalid">
-        Mínimo 6 caracteres
-      </ion-note>
-    </ion-list>
-
-    <ion-button expand="block" type="submit" [disabled]="isProcessing">
-      <ion-spinner *ngIf="isProcessing" name="crescent"></ion-spinner>
-      <span *ngIf="!isProcessing">Registrarme</span>
-    </ion-button>
-
-    <ion-button expand="block" fill="clear" type="button" (click)="navigateToAuthentication()">
-      ¿Ya tienes cuenta? <strong>&nbsp;Inicia sesión</strong>
-    </ion-button>
-  </form>
 </ion-content>

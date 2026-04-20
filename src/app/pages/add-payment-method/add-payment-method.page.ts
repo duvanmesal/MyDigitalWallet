@@ -43,6 +43,11 @@ export class AddPaymentMethodPage {
     };
   }
 
+  get cardDigitsCount(): number {
+    const value = this.formData.controls.cardNumber.value || '';
+    return value.replace(/\s/g, '').length;
+  }
+
   goBack(): void {
     this.router.navigateByUrl('/dashboard');
   }

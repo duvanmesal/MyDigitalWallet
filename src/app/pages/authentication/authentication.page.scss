@@ -1,95 +1,255 @@
-ion-content {
-  --background: #F8F9FD;
+// ══════════════════════════════════════════════════════════════════
+// AUTHENTICATION — NEO-BRUTALIST DESIGN
+// ══════════════════════════════════════════════════════════════════
+
+.auth-content {
+  --background: var(--dw-paper);
 }
 
-ion-header ion-toolbar {
-  --background: transparent;
-  --color: #fff;
+.auth-container {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-form {
-  padding-top: 12px;
+// ═══════════════════════════════════════
+// HERO SECTION
+// ═══════════════════════════════════════
+
+.hero-section {
+  background: var(--dw-ink);
+  color: #fff;
+  padding: 48px 24px 40px;
+  position: relative;
 }
 
-.logo-section {
-  text-align: center;
-  padding: 32px 0 24px;
+.brand {
+  font-family: var(--dw-font-display);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin-bottom: 24px;
 
-  .logo-circle {
-    width: 80px;
-    height: 80px;
-    border-radius: 24px;
-    background: linear-gradient(135deg, #6C5CE7, #a29bfe);
-    margin: 0 auto 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    ion-icon {
-      font-size: 36px;
-      color: #fff;
-    }
+  .brand-prefix {
+    color: rgba(255, 255, 255, 0.5);
   }
 
-  h1 {
-    font-size: 26px;
-    font-weight: 800;
-    color: #1a1a2e;
+  .brand-name {
+    color: #fff;
+  }
+}
+
+.hero-title {
+  font-family: var(--dw-font-display);
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+  letter-spacing: -1px;
+
+  .accent {
+    color: var(--dw-accent);
+  }
+}
+
+.version-tag {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 6px 12px;
+  background: var(--dw-accent);
+  color: #fff;
+  font-family: var(--dw-font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+// ═══════════════════════════════════════
+// FORM SECTION
+// ═══════════════════════════════════════
+
+.form-section {
+  flex: 1;
+  padding: 32px 24px 48px;
+  background: var(--dw-paper);
+}
+
+.form-label {
+  font-family: var(--dw-font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #666;
+  margin: 0 0 24px;
+}
+
+// ─── Field Groups ───
+.field-group {
+  margin-bottom: 20px;
+}
+
+.field-label {
+  display: block;
+  font-family: var(--dw-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--dw-ink);
+  margin-bottom: 8px;
+}
+
+.neo-input {
+  width: 100%;
+  padding: 16px;
+  background: #fff;
+  border: 3px solid var(--dw-ink);
+  font-family: var(--dw-font-body);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--dw-ink);
+  outline: none;
+  transition: box-shadow 0.15s ease;
+
+  &::placeholder {
+    color: #999;
+  }
+
+  &:focus {
+    box-shadow: 4px 4px 0 var(--dw-ink);
+  }
+}
+
+.field-hint {
+  display: block;
+  font-family: var(--dw-font-mono);
+  font-size: 10px;
+  color: #888;
+  margin-top: 6px;
+}
+
+.field-error {
+  display: block;
+  font-family: var(--dw-font-mono);
+  font-size: 10px;
+  color: var(--dw-accent);
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+// ─── Biometric Row ───
+.biometric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 2px solid var(--dw-ink);
+
+  .field-label {
     margin: 0;
   }
 
-  p {
-    color: #A4B0BE;
-    margin: 6px 0 0;
-    font-size: 14px;
+  .bio-hint {
+    font-family: var(--dw-font-mono);
+    font-size: 11px;
+    color: #666;
   }
 }
 
-ion-list {
-  background: transparent;
-
-  ion-item {
-    --background: #fff;
-    --border-radius: 14px;
-    --padding-start: 16px;
-    --padding-end: 16px;
-    margin-bottom: 6px;
-    box-shadow: 0 2px 8px rgba(108, 92, 231, 0.06);
-    --border-color: transparent;
-  }
-}
-
-ion-note[color="danger"] {
-  display: block;
-  padding: 2px 16px 8px;
-  font-size: 0.75rem;
-}
-
-ion-button[type="submit"] {
-  --background: linear-gradient(135deg, #6C5CE7, #a29bfe);
-  --border-radius: 14px;
-  --box-shadow: 0 8px 24px rgba(108, 92, 231, 0.35);
-  height: 52px;
-  font-size: 16px;
-  font-weight: 700;
-  margin-top: 20px;
-}
-
-ion-button[color="danger"] {
-  --border-radius: 14px;
-  height: 48px;
-  font-weight: 600;
-  --border-width: 2px;
-}
-
-ion-button[fill="clear"] {
-  font-weight: 600;
+// ─── Neo-Brutal Buttons ───
+.neo-btn {
+  width: 100%;
+  padding: 18px 24px;
+  font-family: var(--dw-font-body);
   font-size: 14px;
-  --color: #6C5CE7;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+
+  &.primary {
+    background: var(--dw-accent);
+    color: #fff;
+    border: 3px solid var(--dw-ink);
+    box-shadow: 6px 6px 0 var(--dw-ink);
+    margin-top: 8px;
+
+    &:active:not(:disabled) {
+      transform: translate(3px, 3px);
+      box-shadow: 3px 3px 0 var(--dw-ink);
+    }
+
+    .btn-arrow {
+      font-size: 18px;
+      font-weight: 400;
+    }
+  }
+
+  &.outline {
+    background: transparent;
+    color: var(--dw-ink);
+    border: 3px solid var(--dw-ink);
+    box-shadow: 4px 4px 0 var(--dw-ink);
+
+    &:active:not(:disabled) {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 var(--dw-ink);
+    }
+
+    ion-icon {
+      font-size: 18px;
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
-.biometry-btn {
-  --border-radius: 14px;
-  height: 48px;
-  --border-width: 2px;
+// ─── Divider ───
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 24px 0;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: var(--dw-ink);
+  }
+
+  span {
+    padding: 0 16px;
+    font-family: var(--dw-font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+  }
+}
+
+// ─── Sign Up Link ───
+.signup-link {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 14px;
+  color: #666;
+
+  .link-btn {
+    background: none;
+    border: none;
+    color: var(--dw-ink);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 4px;
+  }
 }
