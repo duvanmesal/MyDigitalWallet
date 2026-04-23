@@ -20,10 +20,22 @@
 
 html, body {
   background: var(--dw-paper);
+  background-image:
+    linear-gradient(to right, rgba(10,10,10,0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(10,10,10,0.055) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+ion-app {
+  background: var(--dw-paper);
+  background-image:
+    linear-gradient(to right, rgba(10,10,10,0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(10,10,10,0.055) 1px, transparent 1px);
+  background-size: 16px 16px;
 }
 
 ion-content {
-  --background: var(--dw-paper);
+  --background: transparent;
 }
 
 ion-toolbar {
@@ -102,11 +114,21 @@ ion-card {
 // ─── Neo-Brutal Modals ───
 ion-modal {
   --border-radius: 0;
-  --backdrop-opacity: 0.6;
+  --backdrop-opacity: 0;
+  --background: var(--dw-paper);
+
+  &::part(backdrop) {
+    display: none;
+  }
 
   &::part(content) {
-    border: var(--dw-border);
-    border-bottom: none;
+    border-top: 3px solid var(--dw-ink);
+    box-shadow: 0 -6px 0 var(--dw-ink);
+    background: var(--dw-paper);
+    background-image:
+      linear-gradient(to right, rgba(10,10,10,0.055) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10,10,10,0.055) 1px, transparent 1px);
+    background-size: 16px 16px;
   }
 }
 
@@ -200,5 +222,355 @@ ion-modal {
   &::before {
     content: '// ';
     opacity: 0.5;
+  }
+}
+
+// ─── Grid backgrounds ───
+.dw-grid-bg {
+  background-image:
+    linear-gradient(to right, rgba(10,10,10,0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(10,10,10,0.06) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+// ─── Glass panel ───
+.dw-glass {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border: 2px solid var(--dw-ink);
+  box-shadow: 4px 4px 0 var(--dw-ink);
+}
+
+// ─── Brutal chip ───
+.dw-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  font-family: var(--dw-font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: #fff;
+  border: 2px solid var(--dw-ink);
+  color: var(--dw-ink);
+  cursor: pointer;
+
+  &.active {
+    background: var(--dw-accent);
+    color: #fff;
+  }
+}
+
+// ─── Shimmer animation ───
+@keyframes dw-shimmer {
+  0%   { transform: translateX(-120%) skewX(-18deg); }
+  100% { transform: translateX(260%) skewX(-18deg); }
+}
+
+// ─── Bar grow animation ───
+@keyframes dw-bar-grow {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+// ─── Pulse soft ───
+@keyframes dw-pulse {
+  0%,100% { transform: translate(0,0); }
+  50%     { transform: translate(-1px,-1px); }
+}
+
+// ─── No scrollbar ───
+.no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+// ══════════════════════════════════════════════════════════════════
+// DARK MODE — Paleta oscura cálida neo-brutal
+// #18150F bg · #26211A superficies · #EAE5D8 tinta
+// ══════════════════════════════════════════════════════════════════
+body.dw-dark {
+
+  // ─── Fondo global ───
+  background: var(--dw-paper) !important;
+  background-image:
+    linear-gradient(to right, rgba(234,229,216,0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(234,229,216,0.05) 1px, transparent 1px) !important;
+  background-size: 16px 16px !important;
+
+  ion-app, ion-router-outlet, ion-nav {
+    background: var(--dw-paper);
+  }
+
+  // ─── Headers de toolbar (glass) ───
+  ion-toolbar {
+    --background: rgba(24,21,15,0.9) !important;
+    --color: var(--dw-ink) !important;
+    border-bottom-color: rgba(234,229,216,0.2) !important;
+  }
+
+  // ─── Todas las superficies blancas → superficie oscura ───
+  .neo-input, input.neo-input {
+    background: #26211A !important;
+    color: var(--dw-ink) !important;
+    border-color: rgba(234,229,216,0.25) !important;
+    &::placeholder { color: rgba(234,229,216,0.3) !important; }
+    &:focus { box-shadow: 4px 4px 0 rgba(234,229,216,0.2) !important; }
+  }
+
+  select.neo-select {
+    background-color: #26211A !important;
+    color: var(--dw-ink) !important;
+    border-color: rgba(234,229,216,0.25) !important;
+  }
+
+  // Acciones del dashboard, chips, botones con #fff
+  .action-btn,
+  .card-action-btn,
+  .card-option,
+  .filter-chip,
+  .quick-btn,
+  .chip,
+  .hdr-btn,
+  .sheet-close,
+  .back-btn,
+  .reset-btn,
+  .balance-eye-btn {
+    background: #26211A !important;
+    color: var(--dw-ink) !important;
+    border-color: rgba(234,229,216,0.25) !important;
+    box-shadow: 2px 2px 0 rgba(234,229,216,0.15) !important;
+  }
+
+  .action-btn.accent {
+    background: var(--dw-accent) !important;
+    color: #fff !important;
+  }
+
+  .filter-chip.active {
+    background: var(--dw-accent) !important;
+    color: #fff !important;
+    box-shadow: 3px 3px 0 rgba(234,229,216,0.15) !important;
+  }
+
+  .quick-btn.active {
+    background: var(--dw-success) !important;
+    color: #fff !important;
+    border-color: var(--dw-success) !important;
+  }
+
+  // ─── Panel de balance (glass oscuro) ───
+  .balance-panel {
+    background: rgba(38,33,26,0.7) !important;
+    border-color: rgba(234,229,216,0.2) !important;
+    box-shadow: 4px 4px 0 rgba(234,229,216,0.12) !important;
+  }
+
+  .balance-panel-label { color: rgba(234,229,216,0.5) !important; }
+
+  // ─── Glass stats en movimientos ───
+  .stats-glass {
+    background: rgba(38,33,26,0.7) !important;
+    border-color: rgba(234,229,216,0.2) !important;
+    box-shadow: 4px 4px 0 rgba(234,229,216,0.12) !important;
+  }
+
+  // ─── Listas de movimientos ───
+  .record-list,
+  .transaction-entry {
+    background: #26211A !important;
+    border-color: rgba(234,229,216,0.12) !important;
+  }
+
+  .transaction-entry {
+    border-bottom-color: rgba(234,229,216,0.1) !important;
+  }
+
+  // ─── Panel de tarjeta (card actions) ───
+  .card-status-tag {
+    background: var(--dw-success) !important;
+  }
+
+  // ─── Sheet overlays (modales) ───
+  .sheet-panel {
+    background: #1E1A13 !important;
+    background-image:
+      linear-gradient(to right, rgba(234,229,216,0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(234,229,216,0.05) 1px, transparent 1px) !important;
+    background-size: 16px 16px !important;
+    border-top-color: rgba(234,229,216,0.3) !important;
+    box-shadow: 0 -4px 0 rgba(234,229,216,0.12) !important;
+  }
+
+  .settings-rule { background: rgba(234,229,216,0.15) !important; }
+  .settings-label { color: rgba(234,229,216,0.5) !important; }
+  .settings-hint  { color: rgba(234,229,216,0.4) !important; }
+
+  .accent-swatch {
+    border-color: rgba(234,229,216,0.3) !important;
+    box-shadow: 3px 3px 0 rgba(234,229,216,0.15) !important;
+  }
+
+  .dark-toggle .toggle-track {
+    background: #302A21 !important;
+    border-color: rgba(234,229,216,0.25) !important;
+  }
+  .dark-toggle.on .toggle-track { background: var(--dw-accent) !important; }
+  .dark-toggle .toggle-thumb {
+    background: #EAE5D8 !important;
+    border-color: rgba(234,229,216,0.3) !important;
+  }
+
+  // ─── Sección de formularios (fondos de página) ───
+  .form-section,
+  .enroll-container { background: transparent !important; }
+
+  // ─── Validación ───
+  .validation-box {
+    background: rgba(38,33,26,0.6) !important;
+    border-color: rgba(234,229,216,0.2) !important;
+  }
+
+  .val-item { color: rgba(234,229,216,0.5) !important; }
+  .val-item.valid { color: var(--dw-success) !important; }
+  .val-dot { background: rgba(234,229,216,0.2) !important; border-color: rgba(234,229,216,0.2) !important; }
+
+  // ─── Colores de texto genéricos ───
+  p, span, label, div, h1, h2, h3, strong {
+    &.section-label, &.stat-label, &.balance-panel-label,
+    &.hero-label, &.hero-currency, &.form-label {
+      color: rgba(234,229,216,0.5) !important;
+    }
+  }
+
+  // ─── Divider y reglas ───
+  .divider::before, .divider::after { background: rgba(234,229,216,0.2) !important; }
+  .divider span { color: rgba(234,229,216,0.4) !important; }
+
+  // ─── Secciones con border-bottom ───
+  .actions-section,
+  .cards-section,
+  .vendor-section,
+  .amount-section,
+  .filters-section {
+    border-bottom-color: rgba(234,229,216,0.15) !important;
+  }
+
+  // ─── Amount input row ───
+  .amount-input-row {
+    background: #26211A !important;
+    border-color: rgba(234,229,216,0.25) !important;
+    .currency, .amount-input { color: var(--dw-ink) !important; }
+    .amount-input::placeholder { color: rgba(234,229,216,0.25) !important; }
+  }
+
+  // ─── Summary section ───
+  .summary-section {
+    background: #26211A !important;
+    border-bottom-color: var(--dw-accent) !important;
+  }
+
+  // ─── Barras del chart ───
+  .bar-item { border-color: rgba(234,229,216,0.2) !important; }
+
+  // ─── Terms row ───
+  .terms-row, .random-toggle {
+    background: rgba(234,229,216,0.04) !important;
+    border-color: rgba(234,229,216,0.15) !important;
+  }
+
+  // ─── Mini card (enrollment) ───
+  .mini-card { background: #302A21 !important; box-shadow: 4px 4px 0 var(--dw-accent) !important; }
+
+  // ─── Card actions ───
+  .card-action-btn.success { border-color: var(--dw-success) !important; }
+  .card-action-btn.danger  { border-color: var(--dw-accent) !important; }
+
+  // ─── Section headers ───
+  .section-header .see-all-btn { color: var(--dw-ink) !important; }
+
+  // ─── Textos grises hardcodeados (#666 #888 #999) en páginas ───
+  .field-hint,
+  .form-label,
+  .field-label,
+  .preview-label,
+  .val-label,
+  .bio-hint,
+  .terms-text,
+  .signup-link,
+  .login-link,
+  .current-balance,
+  .summary-status,
+  .bio-notice span,
+  .stat-label,
+  .section-label,
+  .empty-sub,
+  .empty-sub,
+  .card-balance,
+  .card-tail,
+  .currency-label {
+    color: rgba(234,229,216,0.6) !important;
+  }
+
+  // Textos principales de página
+  .field-label,
+  .page-title,
+  .hero-title,
+  .user-name,
+  .header-title,
+  .sheet-title,
+  .val-item span,
+  .empty-title,
+  .stat-amount,
+  .balance-amount,
+  .amount-input,
+  .currency,
+  .summary-value,
+  .brand-name {
+    color: var(--dw-ink) !important;
+  }
+
+  // Labels mono en formularios
+  .field-error { color: var(--dw-accent) !important; }
+
+  // Enlace de navegación
+  .link-btn, .see-all-btn {
+    color: var(--dw-ink) !important;
+  }
+
+  // Divider span
+  .divider span { color: rgba(234,229,216,0.4) !important; }
+
+  // Badge de balance
+  .balance-stat-period { color: rgba(234,229,216,0.5) !important; }
+
+  // Textos del hero de autenticación
+  .brand-prefix { color: rgba(234,229,216,0.4) !important; }
+
+  // Hero section en auth
+  .hero-section {
+    background-color: #18150F !important;
+    background-image:
+      linear-gradient(to right, rgba(234,229,216,0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(234,229,216,0.05) 1px, transparent 1px) !important;
+  }
+
+  // Form sections (fondo blanco explícito)
+  .form-section { background: transparent !important; }
+
+  // Cards indicator
+  .cards-indicator {
+    background: rgba(234,229,216,0.08) !important;
+    color: var(--dw-ink) !important;
+    border-color: rgba(234,229,216,0.2) !important;
+  }
+
+  // Neo-btn ghost/outline
+  .neo-btn.outline, .neo-btn.ghost {
+    background: transparent !important;
+    color: var(--dw-ink) !important;
+    border-color: rgba(234,229,216,0.25) !important;
   }
 }

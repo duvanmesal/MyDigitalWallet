@@ -10,6 +10,7 @@ import { DatabaseService } from '../../core/services/database.service';
 import { MessageService } from '../../core/services/message.service';
 import { AlertService } from '../../core/services/alert.service';
 import { TransactionService } from '../../core/services/transaction.service';
+import { ThemeService, AccentOption } from '../../core/services/theme.service';
 import { PaymentMethod } from '../../core/models/payment.model';
 import { FinancialRecord } from '../../core/models/movement.model';
 
@@ -35,12 +36,14 @@ export class DashboardPage implements OnInit {
   private messageSvc = inject(MessageService);
   private alertSvc = inject(AlertService);
   private transactionSvc = inject(TransactionService);
+  readonly themeSvc = inject(ThemeService);
 
   showBalance = true;
   biometryAvailable = false;
   biometryEnabled = false;
   selectedCard: PaymentMethod | null = null;
   currentCardIndex = 0;
+  showSettings = false;
 
   // Edit modal
   editingPayment: PaymentMethod | null = null;
@@ -82,8 +85,10 @@ export class DashboardPage implements OnInit {
     this.biometryAvailable = await this.security.isAvailable();
     const user = this.auth.authenticatedUser;
     if (user) {
-      const profile = await this.auth.getProfile(user.uid);
-      this.biometryEnabled = !!profile?.biometryActivated;
+      // Run in background — don't block dashboard render waiting for Firestore
+      this.auth.getProfile(user.uid)
+        .then(profile => { this.biometryEnabled = !!profile?.biometryActivated; })
+        .catch(() => {});
     }
     this.alertSvc.initializePushNotifications().catch((e) => console.error('[Push] initialize', e));
   }
@@ -164,6 +169,15 @@ export class DashboardPage implements OnInit {
     if (key === 'add') this.navigateToAddPayment();
     else if (key === 'pay') this.navigateToTransaction();
     else if (key === 'history') this.navigateToHistory();
+    else if (key === 'simulate') this.handleSimulate();
+  }
+
+  private async handleSimulate(): Promise<void> {
+    if (!this.selectedCard) {
+      await this.messageSvc.error('Agrega una tarjeta primero para simular un ingreso');
+      return;
+    }
+    this.openAddFundsModal(this.selectedCard);
   }
 
   // ===== Edit Modal =====
@@ -243,5 +257,9 @@ export class DashboardPage implements OnInit {
 
   trackByMethodId(_: number, m: PaymentMethod): string {
     return m.id ?? m.cardTail;
+  }
+
+  trackByAccent(_: number, a: AccentOption): string {
+    return a.key;
   }
 }

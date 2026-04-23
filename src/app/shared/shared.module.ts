@@ -12,6 +12,7 @@ import { CustomInputComponent } from './components/custom-input/custom-input.com
 import { TransactionItemComponent } from './components/transaction-item/transaction-item.component';
 import { PaymentSimulatorComponent } from './components/payment-simulator/payment-simulator.component';
 import { DateSelectorComponent } from './components/date-selector/date-selector.component';
+import { AccentLabelPipe } from './pipes/accent-label.pipe';
 
 const COMPONENTS = [
   PaymentCardComponent,
@@ -23,6 +24,7 @@ const COMPONENTS = [
   TransactionItemComponent,
   PaymentSimulatorComponent,
   DateSelectorComponent,
+  AccentLabelPipe,
 ];
 
 @NgModule({

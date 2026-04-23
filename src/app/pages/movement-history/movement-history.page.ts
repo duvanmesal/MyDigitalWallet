@@ -30,6 +30,11 @@ export class MovementHistoryPage {
 
   selectedRecordForReaction: FinancialRecord | null = null;
 
+  chartBars: { height: number; isExpense: boolean }[] = Array.from({ length: 18 }, (_, i) => ({
+    height: Math.max(6, Math.floor(Math.random() * 40)),
+    isExpense: i % 3 !== 0,
+  }));
+
   paymentMethods$: Observable<PaymentMethod[]> = this.paymentMethodService.paymentMethods$();
   private allRecords$ = this.transactionService.financialRecords$();
 

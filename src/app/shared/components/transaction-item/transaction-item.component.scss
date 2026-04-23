@@ -1,40 +1,72 @@
+// ══════════════════════════════════════════════════════════════════
+// TRANSACTION ITEM — NEO-BRUTALISM
+// Flat, hard borders, no rounded corners
+// ══════════════════════════════════════════════════════════════════
+
+:host-context(body.dw-dark) .transaction-entry {
+  background: #26211A;
+  border-bottom-color: rgba(234,229,216,0.1);
+
+  .entry-icon {
+    background: #302A21;
+    border-color: rgba(234,229,216,0.2);
+    &.has-reaction { background: #302A21; }
+    ion-icon { color: var(--dw-ink); }
+  }
+
+  .entry-details {
+    .vendor-name { color: var(--dw-ink); }
+    .meta-info   { color: rgba(234,229,216,0.45); }
+  }
+
+  .entry-amount {
+    .amount { color: var(--dw-ink); }
+    .hint   { color: rgba(234,229,216,0.35); }
+  }
+}
+
 .transaction-entry {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 16px;
+  gap: 12px;
+  padding: 12px 14px;
   background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 2px 12px rgba(108, 92, 231, 0.06);
+  border-bottom: 1.5px solid var(--dw-ink);
   user-select: none;
   -webkit-user-select: none;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 80ms ease;
+  position: relative;
+
+  &:last-child {
+    border-bottom: none;
+  }
 
   &:active {
-    transform: scale(0.97);
-    box-shadow: 0 4px 20px rgba(108, 92, 231, 0.15);
+    transform: translate(1px, 1px);
   }
 
   .entry-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 16px;
-    background: #F1F2F6;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    background: var(--dw-ink);
+    color: #fff;
+    border: 2px solid var(--dw-ink);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.4rem;
-    flex-shrink: 0;
-    transition: background 0.2s ease;
+    font-size: 1.1rem;
 
     &.has-reaction {
-      background: rgba(108, 92, 231, 0.1);
+      background: #fff;
+      font-size: 1.3rem;
+      color: inherit;
     }
 
     ion-icon {
-      font-size: 1.3rem;
-      color: #6C5CE7;
+      font-size: 1.1rem;
+      color: #fff;
     }
   }
 
@@ -44,18 +76,25 @@
 
     .vendor-name {
       margin: 0;
+      font-family: var(--dw-font-body);
       font-weight: 600;
-      font-size: 15px;
-      color: #1a1a2e;
+      font-size: 14px;
+      color: var(--dw-ink);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      letter-spacing: -0.01em;
     }
 
     .meta-info {
-      color: #A4B0BE;
-      font-size: 12px;
+      font-family: var(--dw-font-mono);
+      color: rgba(10,10,10,0.5);
+      font-size: 10px;
       font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-top: 2px;
+      display: block;
     }
   }
 
@@ -65,17 +104,20 @@
 
     .amount {
       display: block;
+      font-family: var(--dw-font-mono);
       font-weight: 700;
-      font-size: 15px;
-      color: #FF6B6B;
+      font-size: 14px;
+      color: var(--dw-ink);
     }
 
     .hint {
       display: block;
+      font-family: var(--dw-font-mono);
       font-size: 9px;
-      color: #A4B0BE;
+      color: rgba(10,10,10,0.4);
       margin-top: 2px;
-      opacity: 0.7;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
     }
   }
 }

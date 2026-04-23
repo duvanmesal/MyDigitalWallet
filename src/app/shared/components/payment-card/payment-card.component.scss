@@ -1,36 +1,41 @@
+// ══════════════════════════════════════════════════════════════════
+// PAYMENT CARD — GLASSMORPHISM × NEO-BRUTALISM
+// Square edges, brutal offset backer, hard borders
+// ══════════════════════════════════════════════════════════════════
+
 :host {
   display: block;
-  perspective: 1000px;
+  perspective: 1200px;
 
   &.card-entry .card-container {
-    animation: cardFlipIn 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    animation: cardEntry 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
   }
 }
 
-@keyframes cardFlipIn {
-  0% { transform: perspective(800px) rotateY(-90deg) scale(0.8); opacity: 0; }
-  50% { opacity: 1; }
-  100% { transform: perspective(800px) rotateY(0deg) scale(1); opacity: 1; }
+@keyframes cardEntry {
+  0%   { opacity: 0; transform: perspective(800px) rotateY(-90deg) scale(0.8); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform: perspective(800px) rotateY(0deg) scale(1); }
 }
 
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+@keyframes shimmerMove {
+  0%   { transform: translateX(-120%) skewX(-18deg); }
+  100% { transform: translateX(260%) skewX(-18deg); }
 }
 
 @keyframes holoShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-// ===== CARD CONTAINER (handles flip) =====
+// ─── Card Container (flip wrapper) ───
 .card-container {
   position: relative;
   width: 100%;
-  min-height: 210px;
+  min-height: 200px;
   transform-style: preserve-3d;
-  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   cursor: grab;
 
   &:active { cursor: grabbing; }
@@ -40,15 +45,33 @@
   }
 }
 
-// ===== SHARED CARD FACE =====
+// ─── Brutal backer (SE offset shadow block) ───
+.card-backer {
+  position: absolute;
+  inset: 0;
+  background: var(--dw-ink);
+  transform: translate(6px, 6px);
+  border-radius: 0;
+  z-index: 0;
+}
+
+:host-context(body.dw-dark) .card-backer {
+  background: rgba(234, 229, 216, 0.12);
+}
+
+:host-context(body.dw-dark) .plastic-card {
+  border-color: rgba(234, 229, 216, 0.2);
+}
+
+// ─── Shared card face ───
 .plastic-card {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  min-height: 210px;
-  border-radius: 22px;
-  padding: 24px;
+  min-height: 200px;
+  border-radius: 0;
+  padding: 20px;
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -58,75 +81,88 @@
   overflow: hidden;
   user-select: none;
   -webkit-user-select: none;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.22);
+  border: 2.5px solid var(--dw-ink);
   background: linear-gradient(135deg, #2c3e50 0%, #34495e 40%, #4a627a 100%);
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: -60%;
-    right: -25%;
-    width: 280px;
-    height: 280px;
-    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -50%;
-    left: -15%;
-    width: 220px;
-    height: 220px;
-    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-  }
+  z-index: 1;
 
   &.network-visa {
-    background: linear-gradient(135deg, #1a1f71 0%, #2d3cb4 35%, #4361ee 70%, #6C5CE7 100%);
+    background: linear-gradient(135deg, #0F1F7A 0%, #2C4BFF 55%, #06104A 100%);
   }
 
   &.network-mc {
-    background: linear-gradient(135deg, #1a0000 0%, #cc2229 35%, #eb4d4b 65%, #f79e1b 100%);
+    background: linear-gradient(135deg, #8B0A1F 0%, #FF3D4D 55%, #5A0510 100%);
   }
 }
 
-// ===== FRONT FACE =====
+// ─── Holographic cursor-follow hotspot ───
+.card-shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.22;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.4), transparent 55%);
+  mix-blend-mode: screen;
+  z-index: 2;
+  border-radius: 0;
+}
+
+// ─── Grid lines overlay ───
+.card-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.1;
+  background-image:
+    linear-gradient(to right, #fff 1px, transparent 1px),
+    linear-gradient(to bottom, #fff 1px, transparent 1px);
+  background-size: 24px 24px;
+  z-index: 2;
+}
+
+// ─── Holographic strip ───
+.holographic-strip {
+  position: absolute;
+  top: 46%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 20%, rgba(255,255,255,0.18) 40%, rgba(168,130,255,0.18) 50%, rgba(255,255,255,0.18) 60%, rgba(255,255,255,0.06) 80%, transparent 100%);
+  background-size: 200% 100%;
+  animation: holoShift 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 3;
+}
+
+// ─── Shimmer band ───
+.shimmer-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  z-index: 3;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+    animation: shimmerMove 3.4s ease-in-out infinite;
+  }
+}
+
+// ─── Card front face ───
 .card-front {
   z-index: 2;
-
-  .card-shine {
-    position: absolute;
-    inset: 0;
-    border-radius: 22px;
-    pointer-events: none;
-    opacity: 0;
-    z-index: 5;
-    mix-blend-mode: soft-light;
-  }
-
-  .holographic-strip {
-    position: absolute;
-    top: 46%;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.05) 20%, rgba(255,255,255,0.15) 40%, rgba(168,130,255,0.15) 50%, rgba(255,255,255,0.15) 60%, rgba(255,255,255,0.05) 80%, transparent 100%);
-    background-size: 200% 100%;
-    animation: holoShift 4s ease-in-out infinite;
-    pointer-events: none;
-    z-index: 2;
-  }
 
   .row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
-    z-index: 3;
+    z-index: 4;
   }
 
   .chip-wrapper {
@@ -135,52 +171,54 @@
     gap: 8px;
   }
 
+  // Gold chip (SVG-style via CSS)
   .chip {
-    width: 44px;
-    height: 32px;
-    border-radius: 8px;
-    background: linear-gradient(145deg, #d4af37, #f5d76e, #d4af37);
-    background-size: 200% 200%;
-    animation: shimmer 3s ease infinite;
+    width: 34px;
+    height: 26px;
+    border-radius: 3px;
+    background: linear-gradient(145deg, #F5D98A, #B38A2B, #E8C866);
+    border: 1px solid rgba(80, 60, 10, 0.5);
     display: inline-block;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.25), inset 0 1px 1px rgba(255,255,255,0.3);
     position: relative;
 
     &::after {
       content: '';
       position: absolute;
-      top: 6px; left: 5px; right: 5px; bottom: 6px;
-      border: 1px solid rgba(180,140,40,0.5);
-      border-radius: 3px;
+      top: 5px; left: 4px; right: 4px; bottom: 5px;
+      border: 0.8px solid rgba(120, 90, 20, 0.5);
+      border-radius: 1.5px;
     }
   }
 
   .contactless {
-    opacity: 0.7;
+    opacity: 0.85;
     transform: rotate(90deg);
     font-size: 18px;
     display: flex;
+    color: rgba(255,255,255,0.9);
   }
 
   .network {
+    font-family: var(--dw-font-display);
     font-weight: 800;
-    letter-spacing: 2.5px;
-    font-size: 18px;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    font-style: italic;
+    font-size: 20px;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.4);
   }
 
   .cardnumber {
     display: flex;
-    gap: 14px;
-    margin: 24px 0;
+    gap: 12px;
+    margin: 20px 0 16px;
     position: relative;
-    z-index: 3;
+    z-index: 4;
 
     .group {
-      font-size: 20px;
+      font-family: var(--dw-font-mono);
+      font-size: 18px;
       letter-spacing: 3px;
-      font-family: 'Courier New', monospace;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
       opacity: 0.55;
 
       &.last {
@@ -190,37 +228,45 @@
     }
   }
 
-  .bottom { position: relative; z-index: 3; }
-
-  .cardholder small,
-  .funds small {
-    display: block;
-    font-size: 9px;
-    opacity: 0.6;
-    letter-spacing: 2px;
-    font-weight: 700;
-    margin-bottom: 3px;
+  .bottom {
+    position: relative;
+    z-index: 4;
   }
 
-  .cardholder span {
-    font-size: 13px;
-    text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+  .cardholder, .funds {
+    small {
+      display: block;
+      font-family: var(--dw-font-mono);
+      font-size: 9px;
+      opacity: 0.6;
+      letter-spacing: 3px;
+      font-weight: 700;
+      margin-bottom: 3px;
+      text-transform: uppercase;
+    }
+
+    span {
+      font-family: var(--dw-font-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
   }
 
   .funds {
     text-align: right;
 
     strong {
-      font-size: 22px;
+      font-family: var(--dw-font-mono);
+      font-size: 18px;
       font-weight: 800;
       letter-spacing: -0.5px;
     }
   }
 }
 
-// ===== BACK FACE =====
+// ─── Card back face ───
 .card-back {
   transform: rotateY(180deg);
   z-index: 1;
@@ -229,32 +275,21 @@
 
   .magnetic-strip {
     width: 100%;
-    height: 48px;
-    background: linear-gradient(180deg, #1a1a2e 0%, #2d2d44 40%, #1a1a2e 100%);
-    margin-top: 24px;
-    position: relative;
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 0; right: 0;
-      height: 1px;
-      background: rgba(255,255,255,0.08);
-    }
+    height: 44px;
+    background: linear-gradient(180deg, #111 0%, #2a2a2a 40%, #111 100%);
+    margin-top: 20px;
   }
 
   .signature-panel {
     display: flex;
     align-items: stretch;
-    margin: 18px 24px 0;
-    gap: 12px;
+    margin: 16px 20px 0;
+    gap: 10px;
 
     .signature-area {
       flex: 1;
       background: rgba(255,255,255,0.92);
-      border-radius: 6px;
-      padding: 10px 14px;
+      padding: 8px 12px;
       display: flex;
       align-items: center;
       position: relative;
@@ -262,7 +297,7 @@
       &::before {
         content: '';
         position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
+        inset: 0;
         background: repeating-linear-gradient(
           0deg,
           transparent,
@@ -270,13 +305,12 @@
           rgba(180,200,220,0.3) 10px,
           rgba(180,200,220,0.3) 11px
         );
-        border-radius: 6px;
         pointer-events: none;
       }
 
       .signature-text {
-        font-family: 'Brush Script MT', 'Dancing Script', cursive;
-        font-size: 16px;
+        font-family: 'Brush Script MT', cursive;
+        font-size: 15px;
         color: #333;
         position: relative;
         z-index: 1;
@@ -286,13 +320,13 @@
 
     .cvv-box {
       background: rgba(255,255,255,0.92);
-      border-radius: 6px;
-      padding: 8px 16px;
+      padding: 6px 14px;
       text-align: center;
-      min-width: 64px;
+      min-width: 58px;
 
       small {
         display: block;
+        font-family: var(--dw-font-mono);
         font-size: 8px;
         font-weight: 700;
         letter-spacing: 2px;
@@ -301,8 +335,8 @@
       }
 
       span {
-        font-family: 'Courier New', monospace;
-        font-size: 18px;
+        font-family: var(--dw-font-mono);
+        font-size: 16px;
         font-weight: 700;
         color: #333;
         letter-spacing: 3px;
@@ -311,7 +345,7 @@
   }
 
   .back-info {
-    padding: 16px 24px 0;
+    padding: 12px 20px 0;
 
     .info-row {
       display: flex;
@@ -321,6 +355,7 @@
     .info-item {
       small {
         display: block;
+        font-family: var(--dw-font-mono);
         font-size: 8px;
         opacity: 0.5;
         letter-spacing: 2px;
@@ -329,7 +364,8 @@
       }
 
       span {
-        font-size: 13px;
+        font-family: var(--dw-font-mono);
+        font-size: 12px;
         font-weight: 600;
         letter-spacing: 0.5px;
       }
@@ -337,63 +373,57 @@
   }
 
   .back-footer {
-    padding: 12px 24px 20px;
+    padding: 10px 20px 16px;
     margin-top: auto;
 
     small {
       display: block;
+      font-family: var(--dw-font-mono);
       font-size: 8px;
       opacity: 0.4;
       letter-spacing: 0.5px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .barcode {
       display: flex;
       gap: 1px;
       align-items: flex-end;
-      height: 28px;
+      height: 24px;
 
       .bar {
         height: 100%;
         background: rgba(255,255,255,0.25);
-        border-radius: 1px;
       }
     }
   }
 }
 
-// ===== FLIP BUTTON =====
+// ─── Flip button ───
 .flip-btn {
   position: absolute;
-  bottom: 12px;
-  right: 12px;
+  bottom: 10px;
+  right: 10px;
   z-index: 10;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: none;
-  background: rgba(255,255,255,0.15);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.12);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: background 0.15s ease;
 
-  ion-icon {
-    font-size: 18px;
-  }
+  ion-icon { font-size: 16px; }
 
   &:active {
-    transform: scale(0.9);
     background: rgba(255,255,255,0.25);
   }
 
   &.back {
     bottom: auto;
-    top: 12px;
+    top: 10px;
   }
 }

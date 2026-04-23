@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, Injector, inject, runInInjectionContext } from '@angular/core';
 import {
   Firestore,
   addDoc,
@@ -17,6 +17,7 @@ import { PaymentMethod, PaymentNetwork } from '../models/payment.model';
 export class PaymentMethodService {
   private firestore = inject(Firestore);
   private auth = inject(AuthenticationService);
+  private injector = inject(Injector);
 
   /** Luhn algorithm — validates card number integrity. */
   static luhnValidation(raw: string): boolean {
@@ -57,10 +58,12 @@ export class PaymentMethodService {
     return this.auth.user$.pipe(
       switchMap((u) => {
         if (!u) return of([] as PaymentMethod[]);
-        const ref = collection(this.firestore, `users/${u.uid}/payment-methods`);
-        return collectionData(query(ref, orderBy('creationTimestamp', 'desc')), {
-          idField: 'id',
-        }) as Observable<PaymentMethod[]>;
+        return runInInjectionContext(this.injector, () => {
+          const ref = collection(this.firestore, `users/${u.uid}/payment-methods`);
+          return collectionData(query(ref, orderBy('creationTimestamp', 'desc')), {
+            idField: 'id',
+          }) as Observable<PaymentMethod[]>;
+        });
       })
     );
   }
@@ -85,7 +88,7 @@ export class PaymentMethodService {
       paymentNetwork: network,
       expirationMonth: input.expirationMonth,
       expirationYear: input.expirationYear,
-      availableBalance: Math.floor(Math.random() * 9_000_000) + 1_000_000,
+      availableBalance: 0,
       creationTimestamp: Date.now(),
     };
     const ref = await addDoc(collection(this.firestore, `users/${user.uid}/payment-methods`), paymentMethod);

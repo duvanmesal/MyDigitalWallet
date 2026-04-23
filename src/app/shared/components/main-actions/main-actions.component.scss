@@ -1,3 +1,9 @@
+:host-context(body.dw-dark) .main-actions .action-btn {
+  background: #26211A;
+  color: var(--dw-ink);
+  box-shadow: 2px 2px 0 rgba(234,229,216,0.1);
+}
+
 .main-actions {
   display: flex;
   justify-content: space-around;

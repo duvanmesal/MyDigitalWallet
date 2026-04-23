@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, Injector, inject, runInInjectionContext } from '@angular/core';
 import {
   Firestore,
   addDoc,
@@ -34,6 +34,7 @@ const VENDORS = [
 export class TransactionService {
   private firestore = inject(Firestore);
   private auth = inject(AuthenticationService);
+  private injector = inject(Injector);
 
   /** Generates a fake vendor + amount (stand-in for faker.js). */
   static generateRandomVendorTransaction(): { vendor: string; transactionAmount: number } {
@@ -46,11 +47,13 @@ export class TransactionService {
     return this.auth.user$.pipe(
       switchMap((u) => {
         if (!u) return of([] as FinancialRecord[]);
-        const ref = collection(this.firestore, `users/${u.uid}/movements`);
-        const q = paymentMethodId
-          ? query(ref, where('paymentMethodId', '==', paymentMethodId), orderBy('timestamp', 'desc'))
-          : query(ref, orderBy('timestamp', 'desc'));
-        return collectionData(q, { idField: 'id' }) as Observable<FinancialRecord[]>;
+        return runInInjectionContext(this.injector, () => {
+          const ref = collection(this.firestore, `users/${u.uid}/movements`);
+          const q = paymentMethodId
+            ? query(ref, where('paymentMethodId', '==', paymentMethodId), orderBy('timestamp', 'desc'))
+            : query(ref, orderBy('timestamp', 'desc'));
+          return collectionData(q, { idField: 'id' }) as Observable<FinancialRecord[]>;
+        });
       })
     );
   }

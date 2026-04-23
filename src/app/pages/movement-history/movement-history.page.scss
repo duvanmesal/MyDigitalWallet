@@ -1,9 +1,9 @@
-// ══════════════════════════════════════════════════════════════════
+﻿// ══════════════════════════════════════════════════════════════════
 // MOVEMENT HISTORY — NEO-BRUTALIST DESIGN
 // ══════════════════════════════════════════════════════════════════
 
 ion-content {
-  --background: var(--dw-paper);
+  --background: transparent;
 }
 
 // ═══════════════════════════════════════
@@ -11,12 +11,15 @@ ion-content {
 // ═══════════════════════════════════════
 
 .hist-header ion-toolbar {
-  --background: var(--dw-ink);
-  --color: #fff;
+  --background: rgba(244,241,234,0.88);
+  --color: var(--dw-ink);
   --border-color: transparent;
   --padding-start: 0;
   --padding-end: 0;
   --min-height: 60px;
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 2px solid var(--dw-ink);
 }
 
 .header-inner {
@@ -29,30 +32,32 @@ ion-content {
 
 .back-btn,
 .reset-btn {
-  width: 40px;
-  height: 40px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  background: transparent;
-  color: #fff;
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--dw-ink);
+  background: #fff;
+  color: var(--dw-ink);
+  box-shadow: 2px 2px 0 var(--dw-ink);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 
-  ion-icon { font-size: 18px; }
+  ion-icon { font-size: 16px; }
 
   &:active {
-    background: rgba(255, 255, 255, 0.1);
-    transform: scale(0.95);
+    transform: translate(2px, 2px);
+    box-shadow: none;
   }
 }
 
 .header-title {
   font-family: var(--dw-font-display);
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
-  color: #fff;
+  color: var(--dw-ink);
+  letter-spacing: -0.02em;
 }
 
 // ═══════════════════════════════════════
@@ -60,28 +65,68 @@ ion-content {
 // ═══════════════════════════════════════
 
 .stats-section {
-  background: var(--dw-ink);
-  padding: 24px;
-  border-bottom: 3px solid var(--dw-accent);
+  padding: 14px 16px 0;
 }
 
-.stat-main {
-  .stat-label {
-    font-family: var(--dw-font-mono);
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.5);
-    margin: 0 0 12px;
-    letter-spacing: 0.5px;
-  }
+.stats-glass {
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border: 2px solid var(--dw-ink);
+  box-shadow: 4px 4px 0 var(--dw-ink);
+}
 
-  .stat-amount {
-    font-family: var(--dw-font-display);
-    font-size: 40px;
-    font-weight: 700;
-    color: #fff;
-    margin: 0;
-    letter-spacing: -1px;
+.stat-label {
+  font-family: var(--dw-font-mono);
+  font-size: 10px;
+  color: rgba(10,10,10,0.55);
+  margin: 0 0 4px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.stat-amount {
+  font-family: var(--dw-font-display);
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--dw-ink);
+  margin: 0;
+  letter-spacing: -0.03em;
+}
+
+// Bar chart decoration
+.bar-chart {
+  margin-top: 12px;
+  border-bottom: 2px solid var(--dw-ink);
+  padding-bottom: 2px;
+}
+
+.bar-chart-inner {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 44px;
+}
+
+.bar-item {
+  flex: 1;
+  min-width: 4px;
+  background: var(--dw-ink);
+  border: 1.5px solid var(--dw-ink);
+  border-bottom: none;
+  animation: barGrow 600ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transform-origin: bottom;
+
+  &.bar-expense {
+    background: var(--dw-accent);
   }
+}
+
+@keyframes barGrow {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
 }
 
 // ═══════════════════════════════════════
@@ -89,7 +134,7 @@ ion-content {
 // ═══════════════════════════════════════
 
 .filters-section {
-  padding: 24px;
+  padding: 14px 16px 8px;
   border-bottom: 3px solid var(--dw-ink);
 }
 
@@ -97,9 +142,10 @@ ion-content {
   font-family: var(--dw-font-mono);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 1px;
-  color: #888;
-  margin: 0 0 12px;
+  letter-spacing: 0.12em;
+  color: rgba(10,10,10,0.55);
+  margin: 0 0 8px;
+  text-transform: uppercase;
 }
 
 .filter-chips {
@@ -213,6 +259,10 @@ ion-content {
 
 .modal-sheet {
   background: var(--dw-paper);
+  background-image:
+    linear-gradient(to right, rgba(10,10,10,0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(10,10,10,0.055) 1px, transparent 1px);
+  background-size: 16px 16px;
   height: 100%;
 }
 
@@ -281,3 +331,4 @@ ion-content {
     background: var(--dw-accent);
   }
 }
+

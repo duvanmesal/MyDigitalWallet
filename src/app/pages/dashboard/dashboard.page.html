@@ -2,7 +2,9 @@
   <ion-toolbar>
     <div class="header-inner">
       <div class="user-pill" *ngIf="displayName$ | async as name">
-        <div class="avatar-box">{{ name.charAt(0).toUpperCase() }}</div>
+        <button class="avatar-box" (click)="showSettings = true" title="Configuración">
+          {{ name.charAt(0).toUpperCase() }}
+        </button>
         <div class="user-info">
           <span class="greeting">HOLA DE VUELTA —</span>
           <strong class="user-name">{{ name }}</strong>
@@ -22,31 +24,26 @@
 
 <ion-content>
 
-  <!-- ══════════════ BALANCE HERO ══════════════ -->
-  <div class="hero">
-    <div class="hero-top">
-      <p class="hero-label">// SALDO TOTAL</p>
-      <span class="hero-currency">DISPONIBLE EN PESOS</span>
-    </div>
-
-    <div class="hero-balance-row">
-      <h1 class="hero-amount">
+  <!-- ══════════════ BALANCE PANEL (glass) ══════════════ -->
+  <div class="balance-panel">
+    <div class="balance-panel-badge">Saldo total</div>
+    <div class="balance-panel-label">DISPONIBLE EN PESOS</div>
+    <div class="balance-panel-row">
+      <h1 class="balance-amount" [class.balance-hidden]="!showBalance">
         <ng-container *ngIf="showBalance; else maskedAmt">
           ${{ (totalBalance$ | async) ?? 0 | number:'1.0-0' }}
         </ng-container>
         <ng-template #maskedAmt>
-          <span class="masked">••••••</span>
+          <span>••••••</span>
         </ng-template>
       </h1>
-      <button class="hero-eye" (click)="handleBalanceToggle()">
+      <button class="balance-eye-btn" (click)="handleBalanceToggle()">
         <ion-icon [name]="showBalance ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
       </button>
     </div>
-
-    <div class="hero-stat">
-      <span class="stat-icon">⊘</span>
-      <span class="stat-text">+$482.000</span>
-      <span class="stat-period">últimos 30 días</span>
+    <div class="balance-stat">
+      <span class="balance-stat-tag">+$0</span>
+      <span class="balance-stat-period">últimos 30 días</span>
     </div>
   </div>
 
@@ -170,75 +167,111 @@
 
 </ion-content>
 
-<!-- ═════════════ MODAL: Editar Tarjeta ═════════════ -->
-<ion-modal
-  [isOpen]="!!editingPayment"
-  (didDismiss)="closeEditModal()"
-  [initialBreakpoint]="0.5"
-  [breakpoints]="[0, 0.5]">
-  <ng-template>
-    <div class="modal-sheet" *ngIf="editingPayment">
-      <div class="modal-header">
-        <h3>Editar •••• {{ editingPayment.cardTail }}</h3>
-        <button class="close-btn" (click)="closeEditModal()">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="field-group">
-          <label class="field-label">NOMBRE DEL TITULAR</label>
-          <input
-            class="neo-input"
-            [(ngModel)]="editFormName"
-            autocapitalize="characters"
-            placeholder="NOMBRE APELLIDO">
-        </div>
-        <button class="neo-btn primary" (click)="saveEdit()">
-          GUARDAR CAMBIOS
-        </button>
-      </div>
-    </div>
-  </ng-template>
-</ion-modal>
+<!-- ═════════════ OVERLAY: Configuración ═════════════ -->
+<div class="sheet-overlay" *ngIf="showSettings" (click)="showSettings = false">
+  <div class="sheet-panel settings-panel" (click)="$event.stopPropagation()">
 
-<!-- ═════════════ MODAL: Recargar Saldo ═════════════ -->
-<ion-modal
-  [isOpen]="!!rechargingPayment"
-  (didDismiss)="closeAddFundsModal()"
-  [initialBreakpoint]="0.55"
-  [breakpoints]="[0, 0.55]">
-  <ng-template>
-    <div class="modal-sheet" *ngIf="rechargingPayment">
-      <div class="modal-header">
-        <h3>Recargar •••• {{ rechargingPayment.cardTail }}</h3>
-        <button class="close-btn" (click)="closeAddFundsModal()">✕</button>
-      </div>
-      <div class="modal-body">
-        <p class="current-balance">
-          Saldo actual: <strong>${{ rechargingPayment.availableBalance | number:'1.0-0' }}</strong>
-        </p>
-        <div class="field-group">
-          <label class="field-label">MONTO A RECARGAR (COP)</label>
-          <input
-            class="neo-input mono"
-            type="number"
-            [(ngModel)]="rechargeAmount"
-            placeholder="50000">
-        </div>
-        <div class="quick-amounts">
-          <button
-            *ngFor="let a of quickRechargeAmounts"
-            class="quick-btn"
-            [class.active]="rechargeAmount === a"
-            (click)="rechargeAmount = a">
-            ${{ a | number:'1.0-0' }}
-          </button>
-        </div>
+    <div class="sheet-header">
+      <span class="sheet-title">⚙ Configuración</span>
+      <button class="sheet-close" (click)="showSettings = false">✕</button>
+    </div>
+
+    <div class="sheet-body">
+
+      <!-- Colores de acento -->
+      <p class="settings-label">COLOR DE ACENTO</p>
+      <div class="accent-grid">
         <button
-          class="neo-btn success"
-          (click)="saveRecharge()"
-          [disabled]="!rechargeAmount || rechargeAmount <= 0">
-          RECARGAR +${{ rechargeAmount || 0 | number:'1.0-0' }}
+          *ngFor="let opt of themeSvc.accentOptions; trackBy: trackByAccent"
+          class="accent-swatch"
+          [class.active]="themeSvc.currentAccent === opt.color"
+          [style.background]="opt.color"
+          (click)="themeSvc.setAccent(opt.color)"
+          [title]="opt.label">
+          <span *ngIf="themeSvc.currentAccent === opt.color" class="swatch-check">✓</span>
         </button>
       </div>
+      <p class="settings-hint">
+        {{ themeSvc.accentOptions | accentLabel : themeSvc.currentAccent }}
+      </p>
+
+      <hr class="settings-rule">
+
+      <!-- Modo oscuro -->
+      <div class="settings-row">
+        <div>
+          <p class="settings-label">MODO OSCURO</p>
+          <p class="settings-hint">Invierte papel y tinta</p>
+        </div>
+        <button class="dark-toggle" [class.on]="themeSvc.isDark" (click)="themeSvc.toggleDark()">
+          <span class="toggle-track">
+            <span class="toggle-thumb"></span>
+          </span>
+          <span class="toggle-icon">{{ themeSvc.isDark ? '🌙' : '☀️' }}</span>
+        </button>
+      </div>
+
     </div>
-  </ng-template>
-</ion-modal>
+  </div>
+</div>
+
+<!-- ═════════════ OVERLAY: Editar Tarjeta ═════════════ -->
+<div class="sheet-overlay" *ngIf="editingPayment" (click)="closeEditModal()">
+  <div class="sheet-panel" (click)="$event.stopPropagation()">
+    <div class="sheet-header">
+      <span class="sheet-title">Editar •••• {{ editingPayment.cardTail }}</span>
+      <button class="sheet-close" (click)="closeEditModal()">✕</button>
+    </div>
+    <div class="sheet-body">
+      <div class="field-group">
+        <label class="field-label">NOMBRE DEL TITULAR</label>
+        <input
+          class="neo-input"
+          [(ngModel)]="editFormName"
+          autocapitalize="characters"
+          placeholder="NOMBRE APELLIDO">
+      </div>
+      <button class="neo-btn primary" (click)="saveEdit()">
+        GUARDAR CAMBIOS
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═════════════ OVERLAY: Recargar / Simular Saldo ═════════════ -->
+<div class="sheet-overlay" *ngIf="rechargingPayment" (click)="closeAddFundsModal()">
+  <div class="sheet-panel" (click)="$event.stopPropagation()">
+    <div class="sheet-header">
+      <span class="sheet-title">Simular ingreso •••• {{ rechargingPayment.cardTail }}</span>
+      <button class="sheet-close" (click)="closeAddFundsModal()">✕</button>
+    </div>
+    <div class="sheet-body">
+      <p class="current-balance">
+        Saldo actual: <strong>${{ rechargingPayment.availableBalance | number:'1.0-0' }}</strong>
+      </p>
+      <div class="field-group">
+        <label class="field-label">MONTO A RECARGAR (COP)</label>
+        <input
+          class="neo-input mono"
+          type="number"
+          [(ngModel)]="rechargeAmount"
+          placeholder="50000">
+      </div>
+      <div class="quick-amounts">
+        <button
+          *ngFor="let a of quickRechargeAmounts"
+          class="quick-btn"
+          [class.active]="rechargeAmount === a"
+          (click)="rechargeAmount = a">
+          ${{ a | number:'1.0-0' }}
+        </button>
+      </div>
+      <button
+        class="neo-btn success"
+        (click)="saveRecharge()"
+        [disabled]="!rechargeAmount || rechargeAmount <= 0">
+        RECARGAR +${{ rechargeAmount || 0 | number:'1.0-0' }}
+      </button>
+    </div>
+  </div>
+</div>

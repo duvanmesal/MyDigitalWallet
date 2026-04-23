@@ -16,9 +16,21 @@
 
   <!-- ══════ STATS SUMMARY ══════ -->
   <div class="stats-section">
-    <div class="stat-main">
-      <p class="stat-label">// GASTADO EN EL PERIODO</p>
+    <div class="stats-glass">
+      <p class="stat-label">GASTADO EN EL PERIODO</p>
       <h1 class="stat-amount">${{ (totalExpense$ | async) ?? 0 | number:'1.0-0' }}</h1>
+
+      <!-- Animated bar chart decoration -->
+      <div class="bar-chart">
+        <div class="bar-chart-inner">
+          <div *ngFor="let b of chartBars; let i = index"
+               class="bar-item"
+               [class.bar-expense]="b.isExpense"
+               [style.height.px]="b.height"
+               [style.animation-delay]="(i * 30) + 'ms'">
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, Injector, inject, runInInjectionContext } from '@angular/core';
 import {
   Firestore,
   doc,
@@ -18,13 +18,16 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class DatabaseService {
   private firestore = inject(Firestore);
+  private injector = inject(Injector);
 
   setDocument<T extends DocumentData>(path: string, data: T): Promise<void> {
     return setDoc(doc(this.firestore, path), data, { merge: true });
   }
 
   async getDocument<T>(path: string): Promise<T | null> {
-    const snap = await getDoc(doc(this.firestore, path));
+    const snap = await runInInjectionContext(this.injector, () =>
+      getDoc(doc(this.firestore, path))
+    );
     return snap.exists() ? (snap.data() as T) : null;
   }
 
@@ -37,9 +40,11 @@ export class DatabaseService {
   }
 
   collection$<T>(path: string, ...constraints: QueryConstraint[]): Observable<T[]> {
-    const ref = collection(this.firestore, path);
-    const q = constraints.length ? query(ref, ...constraints) : ref;
-    return collectionData(q, { idField: 'id' }) as Observable<T[]>;
+    return runInInjectionContext(this.injector, () => {
+      const ref = collection(this.firestore, path);
+      const q = constraints.length ? query(ref, ...constraints) : ref;
+      return collectionData(q, { idField: 'id' }) as Observable<T[]>;
+    });
   }
 
   whereEq(field: string, value: unknown): QueryConstraint {

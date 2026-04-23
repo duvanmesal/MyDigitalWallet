@@ -1,33 +1,59 @@
+:host-context(body.dw-dark) .record-list {
+  background: #26211A;
+  border-color: rgba(234,229,216,0.15);
+  box-shadow: 4px 4px 0 rgba(234,229,216,0.1);
+}
+
+:host-context(body.dw-dark) .record-empty {
+  background: #26211A;
+  border-color: rgba(234,229,216,0.15);
+
+  .empty-wrap {
+    background: rgba(234,229,216,0.05);
+    border-color: rgba(234,229,216,0.15);
+    ion-icon { color: var(--dw-ink); }
+  }
+
+  p { color: rgba(234,229,216,0.4); }
+}
+
 .record-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  background: #fff;
+  border: 2px solid var(--dw-ink);
+  box-shadow: 4px 4px 0 var(--dw-ink);
 }
 
 .record-empty {
   text-align: center;
-  padding: 48px 24px;
-  color: #A4B0BE;
+  padding: 40px 24px;
+  background: #fff;
+  border: 2px solid var(--dw-ink);
 
   .empty-wrap {
-    width: 72px;
-    height: 72px;
-    border-radius: 22px;
-    background: rgba(108, 92, 231, 0.08);
+    width: 64px;
+    height: 64px;
+    background: rgba(0,0,0,0.04);
+    border: 2px solid var(--dw-ink);
     margin: 0 auto 14px;
     display: flex;
     align-items: center;
     justify-content: center;
 
     ion-icon {
-      font-size: 32px;
-      color: #6C5CE7;
+      font-size: 28px;
+      color: var(--dw-ink);
     }
   }
 
   p {
-    font-size: 15px;
-    font-weight: 500;
+    font-family: var(--dw-font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(10,10,10,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
     margin: 0;
   }
 }

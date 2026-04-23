@@ -23,14 +23,15 @@ export class AddPaymentMethodPage {
   formData = this.fb.nonNullable.group({
     cardholderName: ['', [Validators.required, Validators.minLength(3)]],
     cardNumber: ['', [Validators.required]],
-    expirationFormat: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]],
-    securityCode: ['', [Validators.required, Validators.pattern(/^\d{3,4}$/)]],
+    expirationFormat: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])(\/\d{2})?$/)]],
+    securityCode: ['', [Validators.required, Validators.pattern(/^\d{2,4}$/)]],
   });
 
   get previewPayment(): PaymentMethod {
     const digits = this.formData.controls.cardNumber.value.replace(/\D/g, '');
     const exp = this.formData.controls.expirationFormat.value;
-    const [mm, yy] = exp.includes('/') ? exp.split('/') : ['', ''];
+    const sc = this.formData.controls.securityCode.value;
+    const [mm, yy] = exp.includes('/') ? exp.split('/') : [exp, sc.slice(0, 2)];
     return {
       cardholderName: this.formData.controls.cardholderName.value || 'NOMBRE APELLIDO',
       cardNumber: digits,
@@ -73,8 +74,9 @@ export class AddPaymentMethodPage {
       this.formData.markAllAsTouched();
       return;
     }
-    const { cardholderName, cardNumber, expirationFormat } = this.formData.getRawValue();
-    const [mm, yy] = expirationFormat.split('/');
+    const { cardholderName, cardNumber, expirationFormat, securityCode } = this.formData.getRawValue();
+    const [mm, yyFromFormat] = expirationFormat.split('/');
+    const yy = yyFromFormat ?? securityCode.slice(0, 2);
     this.isProcessing = true;
     try {
       await this.paymentMethodService.addPaymentMethod({

@@ -1,4 +1,8 @@
 <div class="card-container" [class.is-flipped]="isFlipped">
+
+  <!-- Neo-brutalist offset backer -->
+  <div class="card-backer"></div>
+
   <!-- ======= FRENTE ======= -->
   <div
     class="plastic-card card-front"
@@ -6,7 +10,9 @@
     [class.network-mc]="paymentData.paymentNetwork === 'mastercard'">
 
     <div class="card-shine"></div>
+    <div class="card-grid"></div>
     <div class="holographic-strip"></div>
+    <div class="shimmer-layer"></div>
 
     <div class="row top">
       <div class="chip-wrapper">
@@ -46,6 +52,8 @@
     class="plastic-card card-back"
     [class.network-visa]="paymentData.paymentNetwork === 'visa'"
     [class.network-mc]="paymentData.paymentNetwork === 'mastercard'">
+
+    <div class="card-grid"></div>
 
     <div class="magnetic-strip"></div>
 
