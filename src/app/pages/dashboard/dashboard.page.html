@@ -73,6 +73,64 @@
       </div>
     </section>
 
+    <!-- ─── SAVINGS SECTION ─── -->
+    <section class="savings-section">
+      <div class="section-header">
+        <p class="section-label">// AHORRO PLANIFICADO</p>
+        <button class="see-all-btn" (click)="navigateToSavings()">
+          Abrir módulo <span>→</span>
+        </button>
+      </div>
+
+      <ng-container *ngIf="savingsSummary$ | async as savingsSummary">
+        <div class="savings-card" *ngIf="savingsSummary.activePlan as activePlan; else emptySavingsTpl">
+          <div class="savings-card-top">
+            <div>
+              <p class="savings-kicker">Plan activo</p>
+              <h3>{{ activePlan.name }}</h3>
+            </div>
+            <span class="savings-pill">{{ savingsSummary.activePlans }} activos</span>
+          </div>
+
+          <div class="savings-grid">
+            <div>
+              <span>Meta</span>
+              <strong>${{ activePlan.totalGoal | number:'1.0-0' }}</strong>
+            </div>
+            <div>
+              <span>Ahorrado</span>
+              <strong>${{ activePlan.totalSaved | number:'1.0-0' }}</strong>
+            </div>
+          </div>
+
+          <div class="savings-progress">
+            <div class="progress-head">
+              <span>Progreso</span>
+              <strong>{{ activePlan.progressPercent | number:'1.0-0' }}%</strong>
+            </div>
+            <ion-progress-bar [value]="activePlan.progressPercent / 100"></ion-progress-bar>
+          </div>
+
+          <button class="neo-btn success" (click)="navigateToSavings()">
+            Gestionar ahorro
+          </button>
+        </div>
+      </ng-container>
+
+      <ng-template #emptySavingsTpl>
+        <div class="empty-state compact">
+          <div class="empty-box">
+            <ion-icon name="archive-outline"></ion-icon>
+            <p class="empty-title">Sin planes de ahorro</p>
+            <p class="empty-sub">Agrega un plan estructurado sin alterar tus pagos y movimientos.</p>
+          </div>
+          <button class="neo-btn outline" (click)="navigateToSavings()">
+            <span>＋</span> CREAR AHORRO
+          </button>
+        </div>
+      </ng-template>
+    </section>
+
     <!-- ─── CARDS SECTION ─── -->
     <section class="cards-section">
       <div class="section-header">

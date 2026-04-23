@@ -1,0 +1,279 @@
+<ion-header class="ion-no-border savings-header">
+  <ion-toolbar>
+    <div class="header-inner">
+      <button class="back-btn" type="button" (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+      <span class="header-title">Ahorro planificado</span>
+      <button class="create-btn" type="button" (click)="openCreateSheet()">
+        <ion-icon name="add-outline"></ion-icon>
+      </button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <section class="hero-section" *ngIf="plansSummary$ | async as summary">
+    <div class="hero-card dw-glass">
+      <div class="hero-copy">
+        <p class="hero-label">Wallet + ahorro trazable</p>
+        <h1>Controla metas, submontos y abonos parciales sin tocar tus movimientos normales.</h1>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="stat-label">Planes</span>
+          <strong>{{ summary.totalPlans }}</strong>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-label">Ahorrado</span>
+          <strong>${{ summary.totalSaved | number:'1.0-0' }}</strong>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-label">Meta total</span>
+          <strong>${{ summary.totalGoal | number:'1.0-0' }}</strong>
+        </div>
+        <div class="hero-stat accent">
+          <span class="stat-label">Activos</span>
+          <strong>{{ summary.activePlans }}</strong>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <button class="neo-btn primary" type="button" (click)="openCreateSheet('rule_based')">
+          Crear plan automático
+        </button>
+        <button class="neo-btn outline" type="button" (click)="openCreateSheet('manual')">
+          Crear plan manual
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="plans-section">
+    <div class="section-header">
+      <p class="section-label">Planes registrados</p>
+      <button class="inline-link" type="button" (click)="openCreateSheet('imported')">
+        Importar desde archivo
+      </button>
+    </div>
+
+    <ng-container *ngIf="savingsPlans$ | async as plans">
+      <div class="plans-empty" *ngIf="plans.length === 0">
+        <div class="empty-box">
+          <ion-icon name="archive-outline"></ion-icon>
+          <p class="empty-title">Todavía no tienes planes de ahorro</p>
+          <p class="empty-sub">Crea un plan por regla, manualmente o importando un CSV compatible con Excel.</p>
+        </div>
+      </div>
+
+      <div class="plans-list" *ngIf="plans.length > 0">
+        <article class="plan-card" *ngFor="let plan of plans; trackBy: trackByPlanId" (click)="navigateToPlan(plan.id)">
+          <div class="plan-top">
+            <div>
+              <p class="plan-type">{{ creationTypeLabel(plan.creationType) }}</p>
+              <h2>{{ plan.name }}</h2>
+            </div>
+            <span class="status-pill" [class.completed]="plan.status === 'completed'">
+              {{ plan.status === 'completed' ? 'Completado' : 'Activo' }}
+            </span>
+          </div>
+
+          <p class="plan-description" *ngIf="plan.description">{{ plan.description }}</p>
+
+          <div class="plan-stats">
+            <div>
+              <span class="plan-stat-label">Meta</span>
+              <strong>${{ plan.totalGoal | number:'1.0-0' }}</strong>
+            </div>
+            <div>
+              <span class="plan-stat-label">Ahorrado</span>
+              <strong>${{ plan.totalSaved | number:'1.0-0' }}</strong>
+            </div>
+            <div>
+              <span class="plan-stat-label">Creado</span>
+              <strong>{{ plan.createdAt | date:'dd/MM/yyyy' }}</strong>
+            </div>
+          </div>
+
+          <div class="plan-progress">
+            <div class="progress-head">
+              <span>Progreso general</span>
+              <strong>{{ plan.progressPercent | number:'1.0-0' }}%</strong>
+            </div>
+            <ion-progress-bar [value]="plan.progressPercent / 100"></ion-progress-bar>
+          </div>
+
+          <div class="plan-footer">
+            <span>{{ plan.completedItemsCount }} / {{ plan.itemsCount }} submontos completados</span>
+            <span>Ver detalle →</span>
+          </div>
+        </article>
+      </div>
+    </ng-container>
+  </section>
+</ion-content>
+
+<div class="sheet-overlay" *ngIf="isCreateSheetOpen" (click)="closeCreateSheet()">
+  <div class="sheet-panel" (click)="$event.stopPropagation()">
+    <div class="sheet-header">
+      <span class="sheet-title">Crear plan de ahorro</span>
+      <button class="sheet-close" type="button" (click)="closeCreateSheet()">✕</button>
+    </div>
+
+    <div class="sheet-body">
+      <div class="mode-switch">
+        <button class="mode-btn" [class.active]="creationMode === 'rule_based'" (click)="setCreationMode('rule_based')">
+          Por fórmula
+        </button>
+        <button class="mode-btn" [class.active]="creationMode === 'manual'" (click)="setCreationMode('manual')">
+          Manual
+        </button>
+        <button class="mode-btn" [class.active]="creationMode === 'imported'" (click)="setCreationMode('imported')">
+          Importado
+        </button>
+      </div>
+
+      <form class="create-form" *ngIf="creationMode === 'rule_based'" [formGroup]="ruleForm">
+        <div class="field-group">
+          <label class="field-label">Nombre del plan</label>
+          <input class="neo-input" formControlName="name" placeholder="Plan de ahorro 50 semanas">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Descripción</label>
+          <textarea class="neo-input textarea" formControlName="description" rows="3" placeholder="Opcional"></textarea>
+        </div>
+
+        <div class="two-col-grid">
+          <div class="field-group">
+            <label class="field-label">Monto inicial</label>
+            <input class="neo-input" type="number" formControlName="initialAmount" placeholder="1000">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Incremento fijo</label>
+            <input class="neo-input" type="number" formControlName="incrementAmount" placeholder="1000">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Cantidad de períodos</label>
+            <input class="neo-input" type="number" formControlName="periodsCount" placeholder="50">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Frecuencia</label>
+            <select class="neo-input" formControlName="frequency">
+              <option *ngFor="let option of frequencyOptions" [value]="option.value">{{ option.label }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="preview-card">
+          <div class="preview-head">
+            <div>
+              <p class="preview-label">Previsualización generada</p>
+              <strong>Total esperado: ${{ rulePreviewTotal | number:'1.0-0' }}</strong>
+            </div>
+            <span>{{ rulePreviewTargets.length }} submontos</span>
+          </div>
+          <div class="preview-list">
+            <div class="preview-row" *ngFor="let target of rulePreviewTargets; trackBy: trackByTargetIndex">
+              <span>{{ target.label }}</span>
+              <strong>${{ target.targetAmount | number:'1.0-0' }}</strong>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <form class="create-form" *ngIf="creationMode === 'manual'" [formGroup]="manualForm">
+        <div class="field-group">
+          <label class="field-label">Nombre del plan</label>
+          <input class="neo-input" formControlName="name" placeholder="Vacaciones 2026">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Descripción</label>
+          <textarea class="neo-input textarea" formControlName="description" rows="3" placeholder="Opcional"></textarea>
+        </div>
+
+        <div class="manual-actions">
+          <span>Total proyectado: <strong>${{ manualPreviewTotal | number:'1.0-0' }}</strong></span>
+          <button class="inline-link" type="button" (click)="addManualTarget()">Agregar submonto</button>
+        </div>
+
+        <div class="manual-list" formArrayName="targets">
+          <div class="manual-row" *ngFor="let control of manualTargets.controls; let i = index; trackBy: trackByTargetIndex" [formGroupName]="i">
+            <div class="manual-fields">
+              <input class="neo-input" formControlName="label" placeholder="Nombre o etiqueta">
+              <input class="neo-input" type="number" formControlName="targetAmount" placeholder="50000">
+            </div>
+            <div class="manual-toolbar">
+              <button class="mini-btn" type="button" (click)="moveManualTarget(i, -1)">↑</button>
+              <button class="mini-btn" type="button" (click)="moveManualTarget(i, 1)">↓</button>
+              <button class="mini-btn danger" type="button" (click)="removeManualTarget(i)">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="preview-card">
+          <div class="preview-head">
+            <div>
+              <p class="preview-label">Vista previa manual</p>
+              <strong>{{ manualPreviewTargets.length }} submontos listos</strong>
+            </div>
+          </div>
+          <div class="preview-list">
+            <div class="preview-row" *ngFor="let target of manualPreviewTargets; trackBy: trackByTargetIndex">
+              <span>{{ target.label }}</span>
+              <strong>${{ target.targetAmount | number:'1.0-0' }}</strong>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <form class="create-form" *ngIf="creationMode === 'imported'" [formGroup]="importForm">
+        <div class="field-group">
+          <label class="field-label">Nombre del plan</label>
+          <input class="neo-input" formControlName="name" placeholder="Ahorro importado">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Descripción</label>
+          <textarea class="neo-input textarea" formControlName="description" rows="3" placeholder="Opcional"></textarea>
+        </div>
+
+        <div class="import-box">
+          <p class="preview-label">Archivo compatible</p>
+          <p class="import-hint">Importa un CSV exportado desde Excel con columnas `amount,label` o `monto,nombre`.</p>
+          <label class="upload-btn">
+            Seleccionar archivo
+            <input type="file" accept=".csv,text/csv,application/vnd.ms-excel" (change)="handleImportFile($event)">
+          </label>
+          <span class="import-file" *ngIf="importFileName">{{ importFileName }}</span>
+        </div>
+
+        <div class="preview-card" *ngIf="importPreview">
+          <div class="preview-head">
+            <div>
+              <p class="preview-label">Previsualización importada</p>
+              <strong>{{ importPreview.items.length }} submontos válidos</strong>
+            </div>
+            <span>Delimitador: {{ importPreview.delimiter === '\t' ? 'TAB' : importPreview.delimiter }}</span>
+          </div>
+
+          <div class="import-errors" *ngIf="importPreview.errors.length > 0">
+            <p>Filas con error</p>
+            <span *ngFor="let error of importPreview.errors">{{ error }}</span>
+          </div>
+
+          <div class="preview-list">
+            <div class="preview-row" *ngFor="let target of importPreview.items; trackBy: trackByTargetIndex">
+              <span>{{ target.label }}</span>
+              <strong>${{ target.targetAmount | number:'1.0-0' }}</strong>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <button class="neo-btn success" type="button" (click)="createPlan()">
+        Guardar plan
+      </button>
+    </div>
+  </div>
+</div>

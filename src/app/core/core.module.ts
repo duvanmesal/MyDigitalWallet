@@ -12,6 +12,7 @@ import { ConfirmationService } from './services/confirmation.service';
 import { ProgressService } from './services/progress.service';
 import { ModalService } from './services/modal.service';
 import { NetworkService } from './services/network.service';
+import { SavingsService } from './services/savings.service';
 
 /**
  * CoreModule agrupa todos los servicios singleton y guards de la aplicación.
@@ -31,6 +32,7 @@ import { NetworkService } from './services/network.service';
     ProgressService,
     ModalService,
     NetworkService,
+    SavingsService,
   ],
 })
 export class CoreModule {

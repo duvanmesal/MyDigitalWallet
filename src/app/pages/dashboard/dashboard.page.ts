@@ -13,6 +13,8 @@ import { TransactionService } from '../../core/services/transaction.service';
 import { ThemeService, AccentOption } from '../../core/services/theme.service';
 import { PaymentMethod } from '../../core/models/payment.model';
 import { FinancialRecord } from '../../core/models/movement.model';
+import { SavingsService } from '../../core/services/savings.service';
+import { SavingsPlan } from '../../core/models/savings.model';
 
 interface MainAction {
   key: string;
@@ -36,6 +38,7 @@ export class DashboardPage implements OnInit {
   private messageSvc = inject(MessageService);
   private alertSvc = inject(AlertService);
   private transactionSvc = inject(TransactionService);
+  private savingsSvc = inject(SavingsService);
   readonly themeSvc = inject(ThemeService);
 
   showBalance = true;
@@ -79,6 +82,16 @@ export class DashboardPage implements OnInit {
   );
   recentTransactions$: Observable<FinancialRecord[]> = this.transactionSvc.financialRecords$().pipe(
     map((records) => records.slice(0, 3))
+  );
+  savingsPlans$: Observable<SavingsPlan[]> = this.savingsSvc.savingsPlans$();
+  savingsSummary$: Observable<{ activePlan: SavingsPlan | null; activePlans: number }> = this.savingsPlans$.pipe(
+    map((plans) => {
+      const activePlans = plans.filter((plan) => plan.status === 'active');
+      return {
+        activePlan: activePlans[0] ?? plans[0] ?? null,
+        activePlans: activePlans.length,
+      };
+    })
   );
 
   async ngOnInit(): Promise<void> {
@@ -165,10 +178,15 @@ export class DashboardPage implements OnInit {
     this.router.navigateByUrl('/movement-history');
   }
 
+  navigateToSavings(): void {
+    this.router.navigateByUrl('/savings');
+  }
+
   handleMainAction(key: string): void {
     if (key === 'add') this.navigateToAddPayment();
     else if (key === 'pay') this.navigateToTransaction();
     else if (key === 'history') this.navigateToHistory();
+    else if (key === 'savings') this.navigateToSavings();
     else if (key === 'simulate') this.handleSimulate();
   }
 

@@ -167,6 +167,55 @@ ion-modal {
   }
 }
 
+// ─── Reusable Neo-Brutal CTA ───
+.neo-btn {
+  width: 100%;
+  padding: 16px 24px;
+  font-family: var(--dw-font-body);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+
+  &.primary,
+  &.success,
+  &.outline {
+    border: 3px solid var(--dw-ink);
+    box-shadow: 4px 4px 0 var(--dw-ink);
+  }
+
+  &.primary {
+    background: var(--dw-accent);
+    color: #fff;
+  }
+
+  &.success {
+    background: var(--dw-success);
+    color: #fff;
+  }
+
+  &.outline {
+    background: transparent;
+    color: var(--dw-ink);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  &:active:not(:disabled) {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--dw-ink);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
 // ─── Neo-Brutal Tags ───
 .neo-tag {
   display: inline-flex;

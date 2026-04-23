@@ -38,6 +38,17 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/movement-history/movement-history.module').then((m) => m.MovementHistoryPageModule),
   },
+  {
+    path: 'savings/:planId',
+    canActivate: [authorizationGuard],
+    loadChildren: () =>
+      import('./pages/savings-plan-detail/savings-plan-detail.module').then((m) => m.SavingsPlanDetailPageModule),
+  },
+  {
+    path: 'savings',
+    canActivate: [authorizationGuard],
+    loadChildren: () => import('./pages/savings/savings.module').then((m) => m.SavingsPageModule),
+  },
   { path: '', redirectTo: 'authentication', pathMatch: 'full' },
 ];
 
