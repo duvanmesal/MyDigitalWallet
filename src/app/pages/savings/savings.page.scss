@@ -2,6 +2,7 @@ ion-content {
   --background: transparent;
 }
 
+// ═══ HEADER ═══
 .savings-header ion-toolbar {
   --background: rgba(244, 241, 234, 0.88);
   border-bottom: 2px solid var(--dw-ink);
@@ -28,8 +29,8 @@ ion-content {
 .create-btn,
 .sheet-close,
 .mini-btn {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border: 2px solid var(--dw-ink);
   background: #fff;
   color: var(--dw-ink);
@@ -37,74 +38,91 @@ ion-content {
   align-items: center;
   justify-content: center;
   box-shadow: 2px 2px 0 var(--dw-ink);
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+
+  &:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+  }
 }
 
-.hero-section,
-.plans-section {
-  padding: 18px;
-}
-
-.hero-card,
-.plan-card,
-.preview-card,
-.import-box {
-  background: rgba(255, 255, 255, 0.72);
+// ═══ BALANCE PANEL HERO ═══
+.balance-panel {
+  margin: 14px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
   border: 2px solid var(--dw-ink);
   box-shadow: 4px 4px 0 var(--dw-ink);
+  position: relative;
 }
 
-.hero-card {
-  padding: 20px;
-}
-
-.hero-copy h1 {
-  margin: 10px 0 0;
-  font-family: var(--dw-font-display);
-  font-size: 28px;
-  line-height: 1.05;
-}
-
-.hero-label,
-.field-label,
-.preview-label,
-.plan-type,
-.plan-stat-label,
-.stat-label,
-.sheet-title {
+.balance-panel-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: var(--dw-success);
+  color: #fff;
+  padding: 4px 10px;
   font-family: var(--dw-font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(10, 10, 10, 0.56);
-}
-
-.hero-stats {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-top: 20px;
-}
-
-.hero-stat {
-  padding: 14px;
-  background: #fff;
   border: 2px solid var(--dw-ink);
+}
 
-  strong {
-    display: block;
-    margin-top: 6px;
-    font-size: 20px;
-    color: var(--dw-ink);
-  }
+.balance-panel-label {
+  font-family: var(--dw-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(10,10,10,0.6);
+  margin-top: 16px;
+}
 
-  &.accent {
+.balance-panel-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.balance-amount {
+  font-family: var(--dw-font-display);
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--dw-ink);
+  margin: 0;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.balance-stat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+
+  .balance-stat-tag {
+    display: inline-block;
+    padding: 2px 6px;
+    font-family: var(--dw-font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     background: var(--dw-accent);
     color: #fff;
+    border: 1.5px solid var(--dw-ink);
+    font-weight: 700;
+  }
 
-    .stat-label,
-    strong {
-      color: #fff;
-    }
+  .balance-stat-period {
+    font-family: var(--dw-font-mono);
+    font-size: 11px;
+    color: rgba(10,10,10,0.6);
   }
 }
 
@@ -113,6 +131,11 @@ ion-content {
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   margin-top: 18px;
+}
+
+// ═══ PLANS SECTION ═══
+.plans-section {
+  padding: 4px 14px 32px;
 }
 
 .section-header {
@@ -129,16 +152,21 @@ ion-content {
   text-decoration: underline;
   text-underline-offset: 4px;
   font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
 }
 
+// ─── Empty ───
 .plans-empty .empty-box {
-  padding: 32px 24px;
+  padding: 36px 24px;
   border: 3px dashed var(--dw-ink);
   text-align: center;
-}
 
-.empty-box ion-icon {
-  font-size: 42px;
+  ion-icon {
+    font-size: 40px;
+    color: var(--dw-ink);
+    margin-bottom: 12px;
+  }
 }
 
 .empty-title {
@@ -148,89 +176,172 @@ ion-content {
   font-weight: 700;
 }
 
-.empty-sub,
-.plan-description,
-.import-hint,
-.import-file {
-  color: rgba(10, 10, 10, 0.64);
+.empty-sub {
+  color: rgba(10,10,10,0.64);
+  margin: 0;
 }
 
+// ─── Plan Cards ───
 .plans-list {
   display: grid;
   gap: 14px;
 }
 
 .plan-card {
-  padding: 18px;
+  display: flex;
+  background: rgba(255, 255, 255, 0.72);
+  border: 2px solid var(--dw-ink);
+  box-shadow: 4px 4px 0 var(--dw-ink);
   cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  overflow: hidden;
+
+  &:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--dw-ink);
+  }
 }
 
-.plan-top,
-.plan-stats,
-.progress-head,
-.preview-head,
-.manual-actions {
+.plan-accent-strip {
+  width: 6px;
+  flex-shrink: 0;
+  background: var(--dw-accent);
+
+  &.completed {
+    background: var(--dw-success);
+  }
+}
+
+.plan-inner {
+  flex: 1;
+  padding: 16px;
+}
+
+.plan-top {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   gap: 12px;
 }
 
-.plan-top h2 {
-  margin: 8px 0 0;
+.plan-type {
+  font-family: var(--dw-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(10, 10, 10, 0.5);
+  margin: 0 0 6px;
+}
+
+.plan-meta h2 {
+  margin: 0;
   font-family: var(--dw-font-display);
-  font-size: 24px;
-  line-height: 1;
+  font-size: 22px;
+  line-height: 1.1;
+  color: var(--dw-ink);
+}
+
+.plan-description {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: rgba(10, 10, 10, 0.64);
 }
 
 .status-pill {
   align-self: flex-start;
-  padding: 6px 10px;
+  padding: 5px 9px;
   border: 2px solid var(--dw-ink);
-  background: #fff;
+  background: var(--dw-surface);
+  color: var(--dw-ink);
   font-family: var(--dw-font-mono);
-  font-size: 10px;
+  font-size: 9px;
   text-transform: uppercase;
+  white-space: nowrap;
 
   &.completed {
     background: var(--dw-success);
     color: #fff;
+    border-color: var(--dw-success);
   }
 }
 
-.plan-stats {
+.plan-amounts {
+  display: flex;
+  gap: 0;
   margin: 16px 0;
-  flex-wrap: wrap;
+  border: 2px solid var(--dw-ink);
+}
+
+.plan-amount-item {
+  flex: 1;
+  padding: 10px 12px;
+  text-align: center;
+
+  .plan-stat-label {
+    font-family: var(--dw-font-mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(10, 10, 10, 0.5);
+    display: block;
+    margin-bottom: 4px;
+  }
 
   strong {
     display: block;
-    margin-top: 6px;
+    font-family: var(--dw-font-display);
+    font-size: 16px;
     color: var(--dw-ink);
   }
 }
 
-.plan-progress ion-progress-bar {
-  --background: rgba(10, 10, 10, 0.12);
-  --progress-background: var(--dw-accent);
-  margin-top: 10px;
-  height: 12px;
-  border: 2px solid var(--dw-ink);
+.plan-amount-divider {
+  width: 2px;
+  background: var(--dw-ink);
 }
 
-.progress-head span,
-.plan-footer,
-.preview-row,
-.import-errors span {
-  font-family: var(--dw-font-mono);
-  font-size: 12px;
+.plan-progress {
+  margin-bottom: 12px;
+
+  ion-progress-bar {
+    --background: rgba(10, 10, 10, 0.1);
+    --progress-background: var(--dw-success);
+    margin-top: 8px;
+    height: 10px;
+    border: 2px solid var(--dw-ink);
+  }
+}
+
+.progress-head {
+  display: flex;
+  justify-content: space-between;
+
+  span {
+    font-family: var(--dw-font-mono);
+    font-size: 11px;
+    color: rgba(10, 10, 10, 0.6);
+  }
+
+  strong {
+    font-family: var(--dw-font-mono);
+    font-size: 11px;
+  }
 }
 
 .plan-footer {
   display: flex;
   justify-content: space-between;
-  margin-top: 14px;
+  font-family: var(--dw-font-mono);
+  font-size: 11px;
   color: rgba(10, 10, 10, 0.68);
 }
 
+.plan-arrow {
+  font-weight: 700;
+  color: var(--dw-ink);
+}
+
+// ═══ SHEET OVERLAY ═══
 .sheet-overlay {
   position: fixed;
   inset: 0;
@@ -244,8 +355,18 @@ ion-content {
   max-height: 86vh;
   overflow-y: auto;
   background: var(--dw-paper);
+  background-image:
+    linear-gradient(to right, rgba(10,10,10,0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(10,10,10,0.055) 1px, transparent 1px);
+  background-size: 16px 16px;
   border-top: 3px solid var(--dw-ink);
   box-shadow: 0 -6px 0 var(--dw-ink);
+  animation: sheetUp 220ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes sheetUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
 }
 
 .sheet-header {
@@ -254,110 +375,206 @@ ion-content {
   justify-content: space-between;
   align-items: center;
   background: var(--dw-accent);
+  border-bottom: 2px solid var(--dw-ink);
+}
 
-  .sheet-title {
-    color: #fff;
-    font-weight: 700;
-  }
+.sheet-title {
+  font-family: var(--dw-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
 }
 
 .sheet-body {
   padding: 20px;
 }
 
+// ─── Mode switch ───
 .mode-switch {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 20px;
 }
 
 .mode-btn {
-  padding: 12px 10px;
-  background: #fff;
+  padding: 10px 8px;
+  background: var(--dw-surface);
+  color: var(--dw-ink);
   border: 2px solid var(--dw-ink);
   font-family: var(--dw-font-mono);
   font-size: 11px;
   text-transform: uppercase;
   box-shadow: 3px 3px 0 var(--dw-ink);
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 
   &.active {
     background: var(--dw-accent);
     color: #fff;
   }
+
+  &:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+  }
 }
 
+// ─── Form ───
 .create-form {
   display: grid;
-  gap: 16px;
+  gap: 14px;
 }
 
 .field-group {
   display: grid;
-  gap: 8px;
+  gap: 6px;
+}
+
+.field-label {
+  font-family: var(--dw-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(10, 10, 10, 0.56);
 }
 
 .textarea {
-  min-height: 104px;
+  min-height: 72px;
   resize: vertical;
 }
 
 .two-col-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-
-.preview-card,
-.import-box {
-  padding: 16px;
-}
-
-.preview-list {
-  margin-top: 14px;
-  max-height: 240px;
-  overflow: auto;
-  display: grid;
   gap: 10px;
 }
 
-.preview-row,
-.manual-row {
+// ─── Preview card ───
+.preview-card {
+  background: rgba(255, 255, 255, 0.72);
+  border: 2px solid var(--dw-ink);
+  box-shadow: 4px 4px 0 var(--dw-ink);
+  padding: 14px;
+}
+
+.preview-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+
+  strong {
+    display: block;
+    margin-top: 4px;
+    font-size: 16px;
+    color: var(--dw-ink);
+  }
+}
+
+.preview-label {
+  font-family: var(--dw-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(10, 10, 10, 0.56);
+  margin: 0;
+}
+
+.preview-count {
+  font-family: var(--dw-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--dw-ink);
+}
+
+.preview-list {
+  margin-top: 12px;
+  max-height: 200px;
+  overflow: auto;
+  display: grid;
+  gap: 8px;
+}
+
+.preview-row {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  padding: 10px 12px;
-  background: #fff;
+  padding: 9px 12px;
+  background: var(--dw-surface);
+  color: var(--dw-ink);
   border: 2px solid var(--dw-ink);
+  font-family: var(--dw-font-mono);
+  font-size: 12px;
+}
+
+// ─── Manual list ───
+.manual-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 }
 
 .manual-list {
   display: grid;
-  gap: 12px;
+  gap: 10px;
+}
+
+.manual-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
 }
 
 .manual-fields {
   flex: 1;
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .manual-toolbar {
   display: grid;
-  gap: 8px;
+  gap: 6px;
+  padding-top: 2px;
 }
 
 .mini-btn.danger {
   background: var(--dw-accent);
   color: #fff;
+  border-color: var(--dw-accent);
+}
+
+// ─── Import box ───
+.import-box {
+  background: rgba(255, 255, 255, 0.72);
+  border: 2px solid var(--dw-ink);
+  box-shadow: 4px 4px 0 var(--dw-ink);
+  padding: 16px;
+  display: grid;
+  gap: 8px;
+}
+
+.import-hint {
+  font-size: 13px;
+  color: rgba(10, 10, 10, 0.64);
+  margin: 0;
+
+  code {
+    font-family: var(--dw-font-mono);
+    font-size: 11px;
+    background: rgba(10, 10, 10, 0.08);
+    padding: 1px 4px;
+  }
 }
 
 .upload-btn {
-  margin-top: 12px;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 12px 18px;
+  gap: 8px;
+  padding: 12px 16px;
   background: var(--dw-ink);
   color: #fff;
   border: 2px solid var(--dw-ink);
@@ -365,29 +582,44 @@ ion-content {
   font-size: 11px;
   text-transform: uppercase;
   cursor: pointer;
+  box-shadow: 3px 3px 0 rgba(10,10,10,0.4);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 
-  input {
-    display: none;
+  input { display: none; }
+
+  &:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
   }
 }
 
 .import-file {
   display: block;
-  margin-top: 12px;
+  font-family: var(--dw-font-mono);
+  font-size: 11px;
+  color: rgba(10, 10, 10, 0.64);
 }
 
 .import-errors {
-  margin-top: 14px;
+  margin-top: 12px;
   padding: 12px;
   background: #fff4f4;
   border: 2px solid var(--dw-accent);
   display: grid;
-  gap: 8px;
+  gap: 6px;
 
   p {
     margin: 0;
     font-weight: 700;
     color: var(--dw-accent);
+    font-family: var(--dw-font-mono);
+    font-size: 11px;
+  }
+
+  span {
+    font-family: var(--dw-font-mono);
+    font-size: 11px;
+    color: rgba(10,10,10,0.7);
   }
 }
 
@@ -397,23 +629,108 @@ ion-content {
 
 @media (max-width: 640px) {
   .hero-actions,
-  .two-col-grid,
-  .hero-stats,
-  .mode-switch {
+  .two-col-grid {
     grid-template-columns: 1fr;
   }
 
   .plan-top,
-  .plan-stats,
-  .progress-head,
-  .preview-head,
-  .manual-actions,
-  .plan-footer,
-  .manual-row {
+  .plan-footer {
     flex-direction: column;
+    gap: 8px;
   }
 
   .manual-toolbar {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+// ═══ DARK MODE ═══
+body.dw-dark {
+
+  // Glass balance panel → dark glass
+  .balance-panel {
+    background: rgba(38, 33, 26, 0.7);
+    border-color: rgba(234,229,216,0.2);
+  }
+
+  .balance-panel-label,
+  .balance-stat-period {
+    color: rgba(234,229,216,0.5);
+  }
+
+  // Plan cards → dark surface
+  .plan-card {
+    background: var(--dw-surface);
+    border-color: rgba(234,229,216,0.2);
+  }
+
+  .plan-amounts {
+    border-color: rgba(234,229,216,0.2);
+  }
+
+  .plan-amount-divider {
+    background: rgba(234,229,216,0.2);
+  }
+
+  .plan-amount-item .plan-stat-label {
+    color: rgba(234,229,216,0.45);
+  }
+
+  // Dimmed text (hardcoded rgba)
+  .plan-type,
+  .plan-description,
+  .progress-head span,
+  .plan-footer,
+  .empty-sub,
+  .import-hint,
+  .import-file,
+  .preview-label {
+    color: rgba(234,229,216,0.5);
+  }
+
+  .plan-arrow { color: var(--dw-ink); }
+
+  // Preview card + import box
+  .preview-card,
+  .import-box {
+    background: var(--dw-surface);
+    border-color: rgba(234,229,216,0.2);
+  }
+
+  .preview-head strong { color: var(--dw-ink); }
+
+  // Import hint code snippet
+  .import-hint code {
+    background: rgba(234,229,216,0.08);
+    color: var(--dw-ink);
+  }
+
+  // Progress bar border
+  .plan-progress ion-progress-bar {
+    border-color: rgba(234,229,216,0.2);
+  }
+
+  // Empty box dashed border
+  .empty-box {
+    border-color: rgba(234,229,216,0.3);
+  }
+
+  // Mini move buttons
+  .mini-btn {
+    background: var(--dw-surface);
+    color: var(--dw-ink);
+    border-color: rgba(234,229,216,0.25);
+    box-shadow: 2px 2px 0 rgba(234,229,216,0.12);
+  }
+
+  .mini-btn.danger {
+    background: var(--dw-accent);
+    color: #fff;
+    border-color: var(--dw-accent);
+  }
+
+  // Import errors
+  .import-errors {
+    background: rgba(255,61,77,0.12);
   }
 }

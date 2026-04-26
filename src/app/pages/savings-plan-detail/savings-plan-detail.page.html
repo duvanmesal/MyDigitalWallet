@@ -4,7 +4,7 @@
       <button class="back-btn" type="button" (click)="goBack()">
         <ion-icon name="arrow-back"></ion-icon>
       </button>
-      <span class="header-title">Detalle del ahorro</span>
+      <span class="header-title">Detalle del plan</span>
       <button class="header-action" type="button" (click)="openContributionSheet()">
         <ion-icon name="cash-outline"></ion-icon>
       </button>
@@ -13,136 +13,154 @@
 </ion-header>
 
 <ion-content *ngIf="plan$ | async as plan">
-  <section class="summary-section">
-    <div class="summary-card dw-glass">
-      <div class="summary-top">
-        <div>
-          <p class="summary-label">Plan principal</p>
-          <h1>{{ plan.name }}</h1>
-        </div>
-        <span class="plan-state" [class.completed]="plan.status === 'completed'">
-          {{ plan.status === 'completed' ? 'Completado' : 'Activo' }}
-        </span>
-      </div>
 
-      <p class="summary-description" *ngIf="plan.description">{{ plan.description }}</p>
-
-      <div class="summary-grid">
-        <div class="summary-item">
-          <span>Meta total</span>
-          <strong>${{ plan.totalGoal | number:'1.0-0' }}</strong>
-        </div>
-        <div class="summary-item">
-          <span>Total ahorrado</span>
-          <strong>${{ plan.totalSaved | number:'1.0-0' }}</strong>
-        </div>
-        <div class="summary-item">
-          <span>Pendiente</span>
-          <strong>${{ plan.totalGoal - plan.totalSaved | number:'1.0-0' }}</strong>
-        </div>
-        <div class="summary-item">
-          <span>Creado</span>
-          <strong>{{ plan.createdAt | date:'dd/MM/yyyy' }}</strong>
-        </div>
-      </div>
-
-      <div class="summary-progress">
-        <div class="progress-head">
-          <span>Progreso general</span>
-          <strong>{{ plan.progressPercent | number:'1.0-0' }}%</strong>
-        </div>
-        <ion-progress-bar [value]="plan.progressPercent / 100"></ion-progress-bar>
-      </div>
-
-      <div class="summary-meta">
-        <span class="chip">{{ plan.creationType }}</span>
-        <span class="chip">{{ plan.completedItemsCount }} / {{ plan.itemsCount }} submontos completados</span>
-        <span class="chip" *ngIf="plan.generationConfig">
-          {{ plan.generationConfig.frequency }} · +${{ plan.generationConfig.incrementAmount | number:'1.0-0' }}
-        </span>
-      </div>
-
-      <button class="neo-btn success" type="button" (click)="openContributionSheet()">
-        Registrar abono
-      </button>
+  <!-- ═══ BALANCE PANEL SUMMARY ═══ -->
+  <div class="balance-panel">
+    <div class="balance-panel-badge" [class.completed]="plan.status === 'completed'">
+      {{ plan.status === 'completed' ? 'Completado' : 'Activo' }}
     </div>
-  </section>
 
+    <div class="plan-name-row">
+      <p class="balance-panel-label">Plan de ahorro</p>
+      <h1 class="plan-title">{{ plan.name }}</h1>
+    </div>
+
+    <p class="plan-description" *ngIf="plan.description">{{ plan.description }}</p>
+
+    <div class="plan-amounts-grid">
+      <div class="plan-amount-block accent">
+        <span class="amount-label">Ahorrado</span>
+        <strong class="amount-value">${{ plan.totalSaved | number:'1.0-0' }}</strong>
+      </div>
+      <div class="plan-amount-block">
+        <span class="amount-label">Meta total</span>
+        <strong class="amount-value">${{ plan.totalGoal | number:'1.0-0' }}</strong>
+      </div>
+      <div class="plan-amount-block">
+        <span class="amount-label">Pendiente</span>
+        <strong class="amount-value">${{ plan.totalGoal - plan.totalSaved | number:'1.0-0' }}</strong>
+      </div>
+      <div class="plan-amount-block">
+        <span class="amount-label">Inicio</span>
+        <strong class="amount-value">{{ plan.createdAt | date:'dd/MM/yy' }}</strong>
+      </div>
+    </div>
+
+    <div class="summary-progress">
+      <div class="progress-head">
+        <span>Progreso general</span>
+        <strong>{{ plan.progressPercent | number:'1.0-0' }}%</strong>
+      </div>
+      <ion-progress-bar [value]="plan.progressPercent / 100"></ion-progress-bar>
+    </div>
+
+    <div class="summary-chips">
+      <span class="dw-chip">{{ plan.creationType }}</span>
+      <span class="dw-chip">{{ plan.completedItemsCount }}/{{ plan.itemsCount }} submontos</span>
+      <span class="dw-chip" *ngIf="plan.generationConfig">
+        {{ plan.generationConfig.frequency }} · +${{ plan.generationConfig.incrementAmount | number:'1.0-0' }}
+      </span>
+    </div>
+
+    <button class="neo-btn success" type="button" (click)="openContributionSheet()">
+      <ion-icon name="cash-outline"></ion-icon>
+      Registrar abono
+    </button>
+  </div>
+
+  <!-- ═══ SUBMONTOS ═══ -->
   <section class="targets-section">
     <div class="section-header">
       <p class="section-label">Submontos del plan</p>
-      <button class="inline-link" type="button" (click)="setHistoryFilter('')">
-        Ver historial global
-      </button>
+      <button class="inline-link" type="button" (click)="setHistoryFilter('')">Ver historial</button>
     </div>
 
     <div class="targets-list" *ngIf="targetCards$ | async as targetCards">
       <article class="target-card" *ngFor="let target of targetCards; trackBy: trackByTargetId">
-        <div class="target-top">
-          <div>
-            <p class="target-label">{{ target.label }}</p>
-            <h2>${{ target.targetAmount | number:'1.0-0' }}</h2>
-          </div>
-          <span class="status-pill" [class.progress]="target.status === 'in_progress'" [class.completed]="target.status === 'completed'">
-            {{ statusLabel(target.status) }}
-          </span>
+
+        <div class="target-side-strip"
+             [class.in-progress]="target.status === 'in_progress'"
+             [class.completed]="target.status === 'completed'">
         </div>
 
-        <div class="target-grid">
-          <div>
-            <span>Acumulado</span>
-            <strong>${{ target.savedAmount | number:'1.0-0' }}</strong>
-          </div>
-          <div>
-            <span>Restante</span>
-            <strong>${{ target.remainingAmount | number:'1.0-0' }}</strong>
-          </div>
-          <div>
-            <span>Inicio</span>
-            <strong>{{ target.startedAt ? (target.startedAt | date:'dd/MM/yyyy') : 'Sin abonos' }}</strong>
-          </div>
-          <div>
-            <span>Finalización</span>
-            <strong>{{ target.completedAt ? (target.completedAt | date:'dd/MM/yyyy') : 'Pendiente' }}</strong>
-          </div>
-        </div>
-
-        <div class="target-progress">
-          <div class="progress-head">
-            <span>Avance del submonto</span>
-            <strong>{{ target.progressPercent | number:'1.0-0' }}%</strong>
-          </div>
-          <ion-progress-bar [value]="target.progressPercent / 100"></ion-progress-bar>
-        </div>
-
-        <div class="target-actions">
-          <button class="mini-action accent" type="button" [disabled]="target.remainingAmount <= 0" (click)="openContributionSheet(target)">
-            Abonar aquí
-          </button>
-          <button class="mini-action" type="button" (click)="setHistoryFilter(target.id ?? '')">
-            Filtrar global
-          </button>
-          <button class="mini-action" type="button" (click)="toggleTargetHistory(target.id)">
-            {{ expandedTargetId === target.id ? 'Ocultar historial' : 'Ver historial' }}
-          </button>
-        </div>
-
-        <div class="history-box" *ngIf="expandedTargetId === target.id">
-          <p class="history-title">Historial del submonto</p>
-
-          <div class="history-empty" *ngIf="target.history.length === 0">
-            Todavía no hay abonos para este submonto.
+        <div class="target-body">
+          <div class="target-top">
+            <div class="target-name-col">
+              <p class="target-label">{{ target.label }}</p>
+              <h2 class="target-amount">${{ target.targetAmount | number:'1.0-0' }}</h2>
+            </div>
+            <span class="status-pill"
+                  [class.progress]="target.status === 'in_progress'"
+                  [class.completed]="target.status === 'completed'">
+              {{ statusLabel(target.status) }}
+            </span>
           </div>
 
-          <div class="history-list" *ngIf="target.history.length > 0">
-            <div class="history-row" *ngFor="let contribution of target.history; trackBy: trackByContributionId">
-              <div>
-                <strong>${{ contribution.amount | number:'1.0-0' }}</strong>
-                <span>{{ contribution.entryDate | date:'dd/MM/yyyy' }}</span>
-              </div>
-              <div class="history-meta">
-                <span>{{ contribution.sourceKind === 'overflow' ? 'Excedente' : 'Directo' }}</span>
-                <small *ngIf="contribution.note">{{ contribution.note }}</small>
+          <div class="target-stats-grid">
+            <div class="target-stat">
+              <span>Acumulado</span>
+              <strong>${{ target.savedAmount | number:'1.0-0' }}</strong>
+            </div>
+            <div class="target-stat">
+              <span>Restante</span>
+              <strong>${{ target.remainingAmount | number:'1.0-0' }}</strong>
+            </div>
+            <div class="target-stat">
+              <span>Inicio</span>
+              <strong>{{ target.startedAt ? (target.startedAt | date:'dd/MM/yy') : '—' }}</strong>
+            </div>
+            <div class="target-stat">
+              <span>Fin</span>
+              <strong>{{ target.completedAt ? (target.completedAt | date:'dd/MM/yy') : 'Pendiente' }}</strong>
+            </div>
+          </div>
+
+          <div class="target-progress">
+            <div class="progress-head">
+              <span>Avance</span>
+              <strong>{{ target.progressPercent | number:'1.0-0' }}%</strong>
+            </div>
+            <ion-progress-bar [value]="target.progressPercent / 100"></ion-progress-bar>
+          </div>
+
+          <div class="target-actions">
+            <button
+              class="action-btn accent"
+              type="button"
+              [disabled]="target.remainingAmount <= 0"
+              (click)="openContributionSheet(target)">
+              <ion-icon name="add-circle-outline"></ion-icon>
+              <span>Abonar</span>
+            </button>
+            <button class="action-btn" type="button" (click)="setHistoryFilter(target.id ?? '')">
+              <ion-icon name="filter-outline"></ion-icon>
+              <span>Filtrar</span>
+            </button>
+            <button class="action-btn" type="button" (click)="toggleTargetHistory(target.id)">
+              <ion-icon [name]="expandedTargetId === target.id ? 'chevron-up-outline' : 'time-outline'"></ion-icon>
+              <span>{{ expandedTargetId === target.id ? 'Ocultar' : 'Historial' }}</span>
+            </button>
+          </div>
+
+          <div class="history-box" *ngIf="expandedTargetId === target.id">
+            <p class="history-box-label">Historial del submonto</p>
+
+            <div class="history-empty" *ngIf="target.history.length === 0">
+              Sin abonos registrados todavía.
+            </div>
+
+            <div class="history-list" *ngIf="target.history.length > 0">
+              <div class="history-row" *ngFor="let contribution of target.history; trackBy: trackByContributionId">
+                <div class="history-left">
+                  <strong>${{ contribution.amount | number:'1.0-0' }}</strong>
+                  <span>{{ contribution.entryDate | date:'dd/MM/yyyy' }}</span>
+                </div>
+                <div class="history-right">
+                  <span class="source-tag" [class.overflow]="contribution.sourceKind === 'overflow'">
+                    {{ contribution.sourceKind === 'overflow' ? 'Excedente' : 'Directo' }}
+                  </span>
+                  <small *ngIf="contribution.note">{{ contribution.note }}</small>
+                </div>
               </div>
             </div>
           </div>
@@ -151,21 +169,23 @@
     </div>
   </section>
 
+  <!-- ═══ HISTORIAL GLOBAL ═══ -->
   <section class="history-section">
     <div class="section-header">
-      <p class="section-label">Historial global del ahorro</p>
-      <div class="history-filters" *ngIf="targetCards$ | async as targetCards">
-        <button class="filter-chip" [class.active]="(historyFilterTargetId$ | async) === ''" (click)="setHistoryFilter('')">
-          Todos
-        </button>
-        <button
-          class="filter-chip"
-          *ngFor="let target of targetCards; trackBy: trackByTargetId"
-          [class.active]="(historyFilterTargetId$ | async) === target.id"
-          (click)="setHistoryFilter(target.id ?? '')">
-          {{ target.label }}
-        </button>
-      </div>
+      <p class="section-label">Historial global</p>
+    </div>
+
+    <div class="history-filters" *ngIf="targetCards$ | async as targetCards">
+      <button class="dw-chip" [class.active]="(historyFilterTargetId$ | async) === ''" (click)="setHistoryFilter('')">
+        Todos
+      </button>
+      <button
+        class="dw-chip"
+        *ngFor="let target of targetCards; trackBy: trackByTargetId"
+        [class.active]="(historyFilterTargetId$ | async) === target.id"
+        (click)="setHistoryFilter(target.id ?? '')">
+        {{ target.label }}
+      </button>
     </div>
 
     <div class="history-panel">
@@ -175,24 +195,29 @@
         </div>
 
         <div class="global-history-list" *ngIf="history.length > 0">
-          <div class="global-history-row" *ngFor="let contribution of history; trackBy: trackByContributionId">
-            <div>
-              <p>{{ contribution.targetLabel }}</p>
-              <span>{{ contribution.entryDate | date:'dd/MM/yyyy' }}</span>
+          <div class="global-row" *ngFor="let contribution of history; trackBy: trackByContributionId">
+            <div class="global-row-left">
+              <p class="global-row-target">{{ contribution.targetLabel }}</p>
+              <span class="global-row-date">{{ contribution.entryDate | date:'dd/MM/yyyy' }}</span>
             </div>
-            <div class="global-history-meta">
+            <div class="global-row-right">
               <strong>${{ contribution.amount | number:'1.0-0' }}</strong>
-              <span>{{ contribution.sourceKind === 'overflow' ? 'Excedente' : 'Directo' }}</span>
+              <span class="source-tag" [class.overflow]="contribution.sourceKind === 'overflow'">
+                {{ contribution.sourceKind === 'overflow' ? 'Excedente' : 'Directo' }}
+              </span>
             </div>
           </div>
         </div>
       </ng-container>
     </div>
   </section>
+
 </ion-content>
 
+<!-- ═══ SHEET OVERLAY — REGISTRAR ABONO ═══ -->
 <div class="sheet-overlay" *ngIf="isContributionSheetOpen" (click)="closeContributionSheet()">
   <div class="sheet-panel" (click)="$event.stopPropagation()">
+
     <div class="sheet-header">
       <span class="sheet-title">Registrar abono</span>
       <button class="sheet-close" type="button" (click)="closeContributionSheet()">✕</button>
@@ -204,7 +229,7 @@
           <label class="field-label">Submonto destino</label>
           <select class="neo-input" formControlName="targetId">
             <option *ngFor="let target of targets" [value]="target.id" [disabled]="target.remainingAmount <= 0">
-              {{ target.label }} - ${{ target.remainingAmount | number:'1.0-0' }} pendientes
+              {{ target.label }} — ${{ target.remainingAmount | number:'1.0-0' }} pendientes
             </option>
           </select>
         </div>
@@ -215,33 +240,37 @@
         </div>
 
         <div class="field-group">
-          <label class="field-label">Fecha real del abono</label>
+          <label class="field-label">Fecha del abono</label>
           <input class="neo-input" type="date" formControlName="contributionDate">
         </div>
 
         <div class="field-group">
           <label class="field-label">Nota opcional</label>
-          <textarea class="neo-input textarea" rows="3" formControlName="note" placeholder="Ejemplo: ahorro de la quincena"></textarea>
+          <textarea class="neo-input textarea" rows="2" formControlName="note" placeholder="Ej: ahorro de la quincena"></textarea>
         </div>
       </form>
 
-      <button class="neo-btn success" type="button" (click)="prepareContribution()">
+      <button class="neo-btn primary" type="button" (click)="prepareContribution()">
         Continuar
       </button>
     </div>
   </div>
 </div>
 
+<!-- ═══ SHEET OVERLAY — EXCEDENTE ═══ -->
 <div class="sheet-overlay" *ngIf="isOverflowSheetOpen && contributionDraft" (click)="cancelOverflowFlow()">
   <div class="sheet-panel" (click)="$event.stopPropagation()">
-    <div class="sheet-header">
+
+    <div class="sheet-header overflow-header">
       <span class="sheet-title">Asignar excedente</span>
       <button class="sheet-close" type="button" (click)="cancelOverflowFlow()">✕</button>
     </div>
 
     <div class="sheet-body">
+
       <div class="overflow-summary">
-        <p class="summary-label">Distribución actual</p>
+        <p class="field-label">Distribución actual</p>
+
         <div class="allocation-list">
           <div class="allocation-row" *ngFor="let allocation of contributionDraft.allocations; let i = index">
             <span>{{ i + 1 }}. {{ allocation.targetLabel }}</span>
@@ -250,13 +279,13 @@
         </div>
 
         <div class="overflow-box" *ngIf="contributionDraft.pendingOverflow > 0">
-          <p>Sobrante pendiente: <strong>${{ contributionDraft.pendingOverflow | number:'1.0-0' }}</strong></p>
-          <span>Selecciona manualmente el siguiente submonto para continuar el reparto.</span>
+          <p>Sobrante: <strong>${{ contributionDraft.pendingOverflow | number:'1.0-0' }}</strong></p>
+          <span>Selecciona el próximo submonto para continuar el reparto.</span>
         </div>
 
         <div class="overflow-box success" *ngIf="contributionDraft.pendingOverflow === 0">
-          <p>El abono ya quedó distribuido por completo.</p>
-          <span>Ahora puedes confirmar el registro del historial.</span>
+          <p>Distribución completa</p>
+          <span>El abono quedó repartido por completo. Confirma para guardar.</span>
         </div>
       </div>
 
@@ -267,12 +296,16 @@
           *ngFor="let target of targets"
           [disabled]="getTargetRemainingAfterDraft(target.id ?? '') <= 0"
           (click)="assignOverflow(target.id ?? '')">
-          <span>{{ target.label }}</span>
-          <strong>${{ getTargetRemainingAfterDraft(target.id ?? '') | number:'1.0-0' }} disponibles</strong>
+          <span class="overflow-target-label">{{ target.label }}</span>
+          <strong class="overflow-target-amount">${{ getTargetRemainingAfterDraft(target.id ?? '') | number:'1.0-0' }} disponibles</strong>
         </button>
       </div>
 
-      <button class="neo-btn success" type="button" [disabled]="contributionDraft.pendingOverflow > 0" (click)="finalizeContribution()">
+      <button
+        class="neo-btn success"
+        type="button"
+        [disabled]="contributionDraft.pendingOverflow > 0"
+        (click)="finalizeContribution()">
         Confirmar abono
       </button>
     </div>

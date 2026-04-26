@@ -6,7 +6,12 @@
       "Read(//c/Users/Duvan/AppData/Local/Temp/**)",
       "Bash(mkdir -p design_extract)",
       "Bash(tar xf *)",
-      "Bash(npx ionic *)"
+      "Bash(npx ionic *)",
+      "Bash(npx ng *)",
+      "Bash(npx cap *)",
+      "Bash(npx @capacitor/assets --version)",
+      "Bash(python -c \"from PIL import Image; img=Image.open\\('src/assets/icon/logo.png'\\); print\\(img.size, img.mode\\)\")",
+      "Bash(powershell -Command 'Add-Type -AssemblyName System.Drawing; $img=[System.Drawing.Image]::FromFile\\(\\(Resolve-Path '\\\\''src/assets/icon/logo.png'\\\\''\\)\\); Write-Host $img.Width $img.Height')"
     ]
   }
 }

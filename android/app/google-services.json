@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "424734993433",
+    "project_id": "mydigitalwallet-7217b",
+    "storage_bucket": "mydigitalwallet-7217b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424734993433:android:c9af0794e88e713eb4ce88",
+        "android_client_info": {
+          "package_name": "io.duvan.mydigitalwallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "424734993433-0sv6j6mrn553mlkshog84sce3d7sq01u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhMUpTl35RjxlOujtbCQMqWxv2icp4R4s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "424734993433-0sv6j6mrn553mlkshog84sce3d7sq01u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

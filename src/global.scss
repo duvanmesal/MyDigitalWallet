@@ -380,11 +380,15 @@ body.dw-dark {
   .card-action-btn,
   .card-option,
   .filter-chip,
+  .dw-chip,
   .quick-btn,
   .chip,
   .hdr-btn,
   .sheet-close,
   .back-btn,
+  .create-btn,
+  .header-action,
+  .mini-btn,
   .reset-btn,
   .balance-eye-btn {
     background: #26211A !important;
@@ -398,7 +402,15 @@ body.dw-dark {
     color: #fff !important;
   }
 
-  .filter-chip.active {
+  .mini-btn.danger {
+    background: var(--dw-accent) !important;
+    color: #fff !important;
+    border-color: var(--dw-accent) !important;
+    box-shadow: 2px 2px 0 rgba(234,229,216,0.15) !important;
+  }
+
+  .filter-chip.active,
+  .dw-chip.active {
     background: var(--dw-accent) !important;
     color: #fff !important;
     box-shadow: 3px 3px 0 rgba(234,229,216,0.15) !important;
@@ -418,6 +430,35 @@ body.dw-dark {
   }
 
   .balance-panel-label { color: rgba(234,229,216,0.5) !important; }
+
+  // ─── Savings: tarjetas y panel de vista previa ───
+  .plan-card,
+  .target-card,
+  .history-panel,
+  .preview-card,
+  .import-box {
+    background: #26211A !important;
+    border-color: rgba(234,229,216,0.2) !important;
+    box-shadow: 4px 4px 0 rgba(234,229,216,0.12) !important;
+  }
+
+  .preview-row {
+    background: #1E1A13 !important;
+    border-color: rgba(234,229,216,0.15) !important;
+    color: var(--dw-ink) !important;
+  }
+
+  .mode-btn {
+    background: #26211A !important;
+    color: var(--dw-ink) !important;
+    border-color: rgba(234,229,216,0.25) !important;
+    box-shadow: 3px 3px 0 rgba(234,229,216,0.12) !important;
+  }
+
+  .mode-btn.active {
+    background: var(--dw-accent) !important;
+    color: #fff !important;
+  }
 
   // ─── Glass stats en movimientos ───
   .stats-glass {

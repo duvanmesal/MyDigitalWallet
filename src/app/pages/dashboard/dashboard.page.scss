@@ -370,12 +370,18 @@ ion-content {
   }
 }
 
-.savings-progress ion-progress-bar {
-  --background: rgba(10, 10, 10, 0.12);
-  --progress-background: var(--dw-success);
-  margin-top: 10px;
-  height: 12px;
-  border: 2px solid var(--dw-ink);
+.savings-progress {
+  ion-progress-bar {
+    --background: rgba(10, 10, 10, 0.12);
+    --progress-background: var(--dw-success);
+    margin-top: 10px;
+    height: 12px;
+    border: 2px solid var(--dw-ink);
+  }
+}
+
+.savings-card .neo-btn {
+  margin-top: 24px;
 }
 
 .empty-state.compact {
